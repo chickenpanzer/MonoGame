@@ -11,84 +11,93 @@ namespace MonoGame.Core
 	public class SpriteBase : Component
 	{
 
-		private Texture2D _spriteTexture = null;
-		private Vector2 _spritePosition;
-		private IInputWrapper _inputWrapper = null;
+		#region Private fields
+		protected Texture2D _spriteTexture = null;
+		protected Vector2 _spritePosition;
+		protected IMoveable _mover = null;
 
+		protected int _spriteHeight;
+		protected int _spriteWidth;
+
+		protected bool _isAlive;
+
+		protected Color _color = Color.White;
+		protected float _layer = 0f;
+
+		protected float _textureScale = 1f;
+		#endregion
+
+		#region Public Properties
 		public float MoveSpeed { get; set; }
+		public float TextureScale
+		{
+			get { return _textureScale; }
+			set
+			{
+				_textureScale = value;
+				_spriteHeight = (int)(_spriteTexture.Height * _textureScale);
+				_spriteWidth = (int)(_spriteTexture.Width * _textureScale);
+			}
+		}
 
+		public Vector2 Position { get { return _spritePosition; } }
+		public Texture2D Texture { get { return _spriteTexture; } }
 
+		public int SpriteHeight { get => _spriteHeight; }
+		public int SpriteWidth { get => _spriteWidth; }
 
-		private bool _isAlive;
+		//IMovable access
+		public IMoveable Mover { get => _mover; set => _mover = value; }
 
 		public bool IsAlive
 		{
 			get { return _isAlive; }
 			set { _isAlive = value; }
 		}
-
+		#endregion
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(_spriteTexture, _spritePosition, Color.White);
+			spriteBatch.Draw(_spriteTexture, _spritePosition, null, _color, 0f, Vector2.Zero, TextureScale, SpriteEffects.None, _layer);
 		}
 
 		public override void Update(GameTime gameTime)
 		{
-			if (_inputWrapper == null)
-			{
-				return;
-			}
-
-			MoveDirection move = _inputWrapper.GetMoveDirection();
-
-			switch (move)
-			{
-				case MoveDirection.Top:
-					_spritePosition.Y -= MoveSpeed;
-					break;
-
-				case MoveDirection.Right:
-					_spritePosition.X += MoveSpeed;
-					break;
-
-				case MoveDirection.Bottom:
-					_spritePosition.Y += MoveSpeed;
-					break;
-
-				case MoveDirection.Left:
-					_spritePosition.X -= MoveSpeed;
-					break;
-
-				case MoveDirection.TopRight:
-					_spritePosition.X += MoveSpeed;
-					_spritePosition.Y -= MoveSpeed;
-					break;
-
-				case MoveDirection.BottomRight:
-					_spritePosition.X += MoveSpeed;
-					_spritePosition.Y += MoveSpeed;
-					break;
-
-				case MoveDirection.TopLeft:
-					_spritePosition.X -= MoveSpeed;
-					_spritePosition.Y -= MoveSpeed;
-					break;
-
-				case MoveDirection.BottomLeft:
-					_spritePosition.X -= MoveSpeed;
-					_spritePosition.Y += MoveSpeed;
-					break;
-			}
-
+			//Move Sprite
+			if (_mover != null)
+				_spritePosition = _mover.GetNewPosition(this, gameTime);
 		}
 
-		public SpriteBase(Texture2D texture, Vector2 position, IInputWrapper wrapper, float moveSpeed)
+		#region Constructors
+		public SpriteBase(Texture2D texture, Vector2 position, IMoveable mover,float moveSpeed)
 		{
 			MoveSpeed = moveSpeed;
 			_spriteTexture = texture ?? throw new ArgumentNullException("texture");
-			_inputWrapper = wrapper;
+			_mover = mover;
 			_spritePosition = position;
+			_isAlive = true;
 		}
+
+		public SpriteBase(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color)
+		{
+			MoveSpeed = moveSpeed;
+			_spriteTexture = texture ?? throw new ArgumentNullException("texture");
+			_mover = mover;
+			_spritePosition = position;
+			_color = color;
+			_isAlive = true;
+		}
+
+		public SpriteBase(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color, float layer)
+		{
+			MoveSpeed = moveSpeed;
+			_spriteTexture = texture ?? throw new ArgumentNullException("texture");
+			_mover = mover;
+			_spritePosition = position;
+			_color = color;
+			_layer = layer;
+			_isAlive = true;
+		}
+		#endregion	
 	}
 }

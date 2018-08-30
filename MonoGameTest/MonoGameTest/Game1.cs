@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core;
+using System.Collections.Generic;
 
 namespace MonoGameTest
 {
@@ -13,7 +14,10 @@ namespace MonoGameTest
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		List<SpriteBase> sprites = new List<SpriteBase>();
+
 		SpriteBase sb = null;
+		AmobeaSprite ams = null;
 
 		public Game1()
 		{
@@ -31,6 +35,9 @@ namespace MonoGameTest
 		{
 			// TODO: Add your initialization logic here
 
+			Constants.ScreenHeight =  graphics.PreferredBackBufferHeight;
+			Constants.ScreenWidth = graphics.PreferredBackBufferWidth;
+
 			base.Initialize();
 		}
 
@@ -45,7 +52,14 @@ namespace MonoGameTest
 
 			// TODO: use this.Content to load your game content here
 			var texture = this.Content.Load<Texture2D>("Icon");
-			sb = new SpriteBase(texture, new Vector2(0f, 0f), new KeyBoardInputWrapper(), 10f);
+			sb = new SpriteBase(texture, Vector2.Zero, new KeyboardMover(5f), 10f, Color.White, 1f);
+			sb.TextureScale = 0.2f;
+
+			ams = new AmobeaSprite(texture, new Vector2(100f,100f), new RandomMover(5f,1), 5f, Color.Blue);
+			ams.TextureScale = 0.5f;
+
+			sprites.Add(sb);
+			sprites.Add(ams);
 
 		}
 
@@ -70,6 +84,7 @@ namespace MonoGameTest
 
 			// TODO: Add your update logic here
 			sb.Update(gameTime);
+			ams.Update(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -83,9 +98,15 @@ namespace MonoGameTest
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			// TODO: Add your drawing code here
-			spriteBatch.Begin();
+			spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
 			sb.Draw(gameTime, spriteBatch);
+			ams.Draw(gameTime, spriteBatch);
+
+			foreach (var child in ams.Childrens)
+			{
+				child.Draw(gameTime, spriteBatch);
+			}
 
 			spriteBatch.End();
 

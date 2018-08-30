@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace MonoGame.Core
 {
-	public enum MoveDirection
+	public static class Constants
 	{
-		None,
-		Top,
-		TopRight,
-		Right,
-		BottomRight,
-		Bottom,
-		BottomLeft,
-		Left,
-		TopLeft
+
+		public static int ScreenWidth;
+		public static int ScreenHeight;
+
+
 	}
 }
