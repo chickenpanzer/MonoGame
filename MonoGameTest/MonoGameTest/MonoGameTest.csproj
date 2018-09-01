@@ -53,7 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\cobble_blood2.png" />
+    <Content Include="Content\lava0.png" />
     <Content Include="Icon.ico" />
+    <Content Include="LevelTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

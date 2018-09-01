@@ -19,6 +19,8 @@ namespace MonoGameTest
 		SpriteBase sb = null;
 		AmobeaSprite ams = null;
 
+		Level level = null;
+
 		public Game1()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -37,6 +39,9 @@ namespace MonoGameTest
 
 			Constants.ScreenHeight =  graphics.PreferredBackBufferHeight;
 			Constants.ScreenWidth = graphics.PreferredBackBufferWidth;
+
+			level = new Level(this);
+			level.LoadLevel("LevelTest.xml");
 
 			base.Initialize();
 		}
@@ -104,12 +109,7 @@ namespace MonoGameTest
 
 			// TODO: Add your drawing code here
 			spriteBatch.Begin(SpriteSortMode.FrontToBack);
-
-			foreach (var sprite in sprites)
-			{
-				sprite.Draw(gameTime, spriteBatch);
-			}
-
+			level.Draw(gameTime, spriteBatch);
 			spriteBatch.End();
 
 			base.Draw(gameTime);

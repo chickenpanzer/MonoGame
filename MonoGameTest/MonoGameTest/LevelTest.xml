@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Level name="LevelTest" rows="2" columns="2">
+  <Content>
+    <!-- add texture ressources here-->
+    <TextureRessource key ="cobble_blood2"/>
+    <TextureRessource key ="lava0"/>
+  </Content>
+  <!-- define level tiles and layers here-->
+  <Tiles>
+    <Tile posX ="0" posY="0" isWalkable="True">
+      <Layer assetName="cobble_blood2" depth="0"/>
+      <Layer assetName="lava0" depth="0,2"/>
+    </Tile>
+    <Tile posX ="0" posY="1" isWalkable="True">
+      <Layer assetName="cobble_blood2" depth="0"/>
+    </Tile>
+    <Tile posX ="1" posY="0" isWalkable="True">
+      <Layer assetName="cobble_blood2" depth="0"/>
+    </Tile>
+    <Tile posX ="1" posY="1" isWalkable="True">
+      <Layer assetName="cobble_blood2" depth="0"/>
+      <Layer assetName="lava0" depth="0,2"/>
+    </Tile>
+  </Tiles>
+</Level>
