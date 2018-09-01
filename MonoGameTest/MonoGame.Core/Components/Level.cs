@@ -13,6 +13,7 @@ namespace MonoGame.Core
 {
 	public class Level : Component
 	{
+		#region Private
 		//Level size
 		private int _rows;
 		private int _columns;
@@ -23,7 +24,7 @@ namespace MonoGame.Core
 
 		//Layers
 		private Dictionary<float, SpriteBase[,]> _layers = null;
-
+		#endregion
 
 		public Level(Game game)
 		{
@@ -73,8 +74,7 @@ namespace MonoGame.Core
 					depth = float.Parse(layer.Attribute("depth").Value);
 
 					//Get texture
-					Texture2D texture = null;
-					_textures.TryGetValue(assetName, out texture);
+					_textures.TryGetValue(assetName, out Texture2D texture);
 
 					//Adding layer
 					if (!_layers.ContainsKey(depth))
@@ -82,9 +82,8 @@ namespace MonoGame.Core
 						_layers.Add(depth, new SpriteBase[_rows, _columns]);
 					}
 
-					SpriteBase[,] grid = null;
 
-					_layers.TryGetValue(depth, out grid);
+					_layers.TryGetValue(depth, out SpriteBase[,] grid);
 					grid[posX, posY] = new SpriteBase(texture, new Vector2(posX * 32, posY * 32), null, depth);
 				}
 			}
