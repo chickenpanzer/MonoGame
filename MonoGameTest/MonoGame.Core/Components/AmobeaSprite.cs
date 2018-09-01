@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,46 +11,51 @@ namespace MonoGame.Core
 {
 	public class AmobeaSprite : SpriteBase
 	{
-
-		private List<SpriteBase> _childrens = new List<SpriteBase>();
-		private int _timer = 0;
+		private double _timer = 0;
 		private int _interval = 5;
 
-		public List<SpriteBase> Childrens { get => _childrens; }
+		private Random _random = new Random(); 
 
-		public override void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime, List<SpriteBase> sprites)
 		{
 			//Move Sprite
 			if (_mover != null)
 				_spritePosition = _mover.GetNewPosition(this, gameTime);
 
 			//Spawn new amobea
-			SpawnAmobea(gameTime);
-
-			//Move childrens
-			foreach (var child in _childrens)
-			{
-				child.Update(gameTime);
-			}
-
-			
+			SpawnAmobea(gameTime, sprites);
 		}
 
-		private void SpawnAmobea(GameTime gameTime)
+		private void SpawnAmobea(GameTime gameTime, List<SpriteBase> sprites)
 		{
-			if (gameTime == null || gameTime.TotalGameTime.Seconds - _timer < _interval)
+			if (gameTime == null || gameTime.TotalGameTime.TotalSeconds - _timer < _interval)
 			{
 				//Don't spawn
 				return;
 			}
 
-			//spawn
-			_timer = gameTime.TotalGameTime.Seconds;
-			var child = new SpriteBase(this._spriteTexture, new Vector2(200f,200f), null, 10f,Color.White,2f);
-			child.TextureScale = 0.5f;
-			_childrens.Add(child);
+			//spawn new sprite
+			Debug.Print("Spawning...");
+			_timer = gameTime.TotalGameTime.TotalSeconds;
 
+			//33% chance of spawning a new amobea
+			int res = _random.Next(0, 101);
+			if (res > 66)
+			{
+				Debug.Print("=> Amobea");
+				var clone = this.Clone() as AmobeaSprite;
+				clone.Mover = new RandomMover(1f, 2000);
+				sprites.Add(clone);
+			}
+			else
+			{
+				Debug.Print("=>SpriteBase");
+				var child = new SpriteBase(this._spriteTexture, new Vector2(this._spritePosition.X + 50, this._spritePosition.Y + 50), new RandomMover(2f, 1), 10f, Color.White, 0.3f);
+				child.TextureScale = 0.5f;
+				sprites.Add(child);
+			}
 
+			Debug.Print(string.Format("Sprites in list : {0}", sprites.Count));
 		}
 
 		public AmobeaSprite(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed) : base(texture, position, mover, moveSpeed)

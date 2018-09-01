@@ -63,8 +63,6 @@ namespace MonoGame.Core
 					newPosition.Y -= 1;
 			}
 
-			Debug.Print(newPosition.ToString());
-
 			return newPosition;
 
 		}

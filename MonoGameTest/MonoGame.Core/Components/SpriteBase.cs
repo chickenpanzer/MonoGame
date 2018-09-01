@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Core
 {
-	public class SpriteBase : Component
+	public class SpriteBase : Component , ICloneable
 	{
 
 		#region Private fields
@@ -61,11 +61,16 @@ namespace MonoGame.Core
 			spriteBatch.Draw(_spriteTexture, _spritePosition, null, _color, 0f, Vector2.Zero, TextureScale, SpriteEffects.None, _layer);
 		}
 
-		public override void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime, List<SpriteBase> sprites)
 		{
 			//Move Sprite
 			if (_mover != null)
 				_spritePosition = _mover.GetNewPosition(this, gameTime);
+		}
+
+		public object Clone()
+		{
+			return this.MemberwiseClone();
 		}
 
 		#region Constructors

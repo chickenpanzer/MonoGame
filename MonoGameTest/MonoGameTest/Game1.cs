@@ -55,7 +55,7 @@ namespace MonoGameTest
 			sb = new SpriteBase(texture, Vector2.Zero, new KeyboardMover(5f), 10f, Color.White, 1f);
 			sb.TextureScale = 0.2f;
 
-			ams = new AmobeaSprite(texture, new Vector2(100f,100f), new RandomMover(5f,1), 5f, Color.Blue);
+			ams = new AmobeaSprite(texture, new Vector2(100f,100f), new RandomMover(1f,10), 5f, Color.Blue, 0.5f);
 			ams.TextureScale = 0.5f;
 
 			sprites.Add(sb);
@@ -83,8 +83,13 @@ namespace MonoGameTest
 				Exit();
 
 			// TODO: Add your update logic here
-			sb.Update(gameTime);
-			ams.Update(gameTime);
+			foreach (var sprite in sprites.ToArray())
+			{
+				sprite.Update(gameTime, sprites);
+			}
+
+			//Remove dead sprites from List
+			sprites.RemoveAll(s => !s.IsAlive);
 
 			base.Update(gameTime);
 		}
@@ -100,12 +105,9 @@ namespace MonoGameTest
 			// TODO: Add your drawing code here
 			spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-			sb.Draw(gameTime, spriteBatch);
-			ams.Draw(gameTime, spriteBatch);
-
-			foreach (var child in ams.Childrens)
+			foreach (var sprite in sprites)
 			{
-				child.Draw(gameTime, spriteBatch);
+				sprite.Draw(gameTime, spriteBatch);
 			}
 
 			spriteBatch.End();
