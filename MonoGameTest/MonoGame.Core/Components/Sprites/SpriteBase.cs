@@ -67,7 +67,7 @@ namespace MonoGame.Core
 		{
 			//Move Sprite
 			if (_mover != null)
-				_spritePosition = _mover.GetNewPosition(this, gameTime);
+				_spritePosition = _mover.GetNewPosition(this.Position, gameTime);
 		}
 
 		public object Clone()

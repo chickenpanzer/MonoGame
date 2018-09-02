@@ -13,7 +13,6 @@ namespace MonoGame.Core
 		float MoveSpeed { get; set; }
 		int Interval { get; set; }
 
-		Vector2 GetNewPosition(SpriteBase sprite, GameTime gametime = null);
-
+		Vector2 GetNewPosition(Vector2 actual, GameTime gametime = null);
 	}
 }

@@ -30,9 +30,9 @@ namespace MonoGame.Core
 			_interval = moveInterval;
 		}
 
-		public Vector2 GetNewPosition(SpriteBase sprite, GameTime gametime = null)
+		public Vector2 GetNewPosition(Vector2 actual, GameTime gametime = null)
 		{
-			Vector2 newPosition = sprite.Position;
+			Vector2 newPosition = actual;
 
 			if (gametime == null || gametime.TotalGameTime.TotalSeconds - _timer < _interval)
 			{
@@ -56,19 +56,21 @@ namespace MonoGame.Core
 			if (newPosition.Y < 0)
 				newPosition.Y = 0;
 
-			if (newPosition.X + sprite.SpriteWidth > Constants.ScreenWidth)
+			// TODO: check this
+			if (newPosition.X > Constants.ScreenWidth)
 			{
-				while (newPosition.X + sprite.SpriteWidth > Constants.ScreenWidth)
+				while (newPosition.X > Constants.ScreenWidth)
 					newPosition.X -= 1;
 			}
 
-			if (newPosition.Y + sprite.SpriteHeight > Constants.ScreenHeight)
+			if (newPosition.Y > Constants.ScreenHeight)
 			{
-				while (newPosition.Y + sprite.SpriteHeight > Constants.ScreenHeight)
+				while (newPosition.Y > Constants.ScreenHeight)
 					newPosition.Y -= 1;
 			}
 
 			return newPosition;
 		}
+
 	}
 }

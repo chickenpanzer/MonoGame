@@ -33,10 +33,10 @@ namespace MonoGame.Core
 		public float MoveSpeed { get => _moveSpeed; set { _moveSpeed = value; } }
 		public int Interval { get => 0; set {;} }
 
-		public Vector2 GetNewPosition(SpriteBase sprite, GameTime gametime = null)
+		public Vector2 GetNewPosition(Vector2 actual, GameTime gametime = null)
 		{
 
-			Vector2 newPosition = sprite.Position;
+			Vector2 newPosition = actual;
 			float moveValue = 0f;
 
 			moveValue = (_isReverse ? _moveSpeed * -1 : _moveSpeed);
@@ -56,24 +56,24 @@ namespace MonoGame.Core
 				newPosition.X -= moveValue;
 
 
-			//Prevent offScreen Movement
-			if (newPosition.X < 0)
-				newPosition.X = 0;
+			//////Prevent offScreen Movement
+			////if (newPosition.X < 0)
+			////	newPosition.X = 0;
 
-			if (newPosition.Y < 0)
-				newPosition.Y = 0;
+			////if (newPosition.Y < 0)
+			////	newPosition.Y = 0;
 
-			if (newPosition.X + sprite.SpriteWidth > Constants.ScreenWidth)
-			{
-				while (newPosition.X + sprite.SpriteWidth > Constants.ScreenWidth)
-					newPosition.X -= 1;
-			}
+			////if (newPosition.X  > Constants.ScreenWidth)
+			////{
+			////	while (newPosition.X  > Constants.ScreenWidth)
+			////		newPosition.X -= 1;
+			////}
 
-			if (newPosition.Y + sprite.SpriteHeight > Constants.ScreenHeight)
-			{
-				while (newPosition.Y + sprite.SpriteHeight > Constants.ScreenHeight)
-					newPosition.Y -= 1;
-			}
+			////if (newPosition.Y  > Constants.ScreenHeight)
+			////{
+			////	while (newPosition.Y  > Constants.ScreenHeight)
+			////		newPosition.Y -= 1;
+			////}
 
 			_previousState = state;
 

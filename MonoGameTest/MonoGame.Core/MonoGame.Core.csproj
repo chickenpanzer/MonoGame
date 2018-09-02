@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Penumbra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Penumbra.WindowsDX.1.4.0\lib\net45\MonoGame.Penumbra.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,20 +48,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\AmobeaSprite.cs" />
+    <Compile Include="Components\Sprites\Amobea.cs" />
     <Compile Include="Components\Component.cs" />
-    <Compile Include="Components\Floor.cs" />
-    <Compile Include="Components\KeyboardMover.cs" />
+    <Compile Include="Components\Sprites\Floor.cs" />
+    <Compile Include="Components\Movers\KeyboardMover.cs" />
     <Compile Include="Components\Level.cs" />
-    <Compile Include="Components\Player.cs" />
-    <Compile Include="Components\RandomMover.cs" />
-    <Compile Include="Components\SpriteBase.cs" />
+    <Compile Include="Components\Sprites\Monster.cs" />
+    <Compile Include="Components\Sprites\Pickup.cs" />
+    <Compile Include="Components\Sprites\Player.cs" />
+    <Compile Include="Components\Movers\RandomMover.cs" />
+    <Compile Include="Components\Sprites\SpriteBase.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Interface\IActor.cs" />
     <Compile Include="Interface\IMoveable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Wrappers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

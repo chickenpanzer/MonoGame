@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Core
 {
-	public class AmobeaSprite : SpriteBase
+	public class Amobea : Monster
 	{
 		private double _timer = 0;
 		private int _interval = 5;
@@ -20,7 +20,7 @@ namespace MonoGame.Core
 		{
 			//Move Sprite
 			if (_mover != null)
-				_spritePosition = _mover.GetNewPosition(this, gameTime);
+				_spritePosition = _mover.GetNewPosition(this.Position, gameTime);
 
 			//Spawn new amobea
 			SpawnAmobea(gameTime, sprites);
@@ -43,7 +43,7 @@ namespace MonoGame.Core
 			if (res > 66)
 			{
 				Debug.Print("=> Amobea");
-				var clone = this.Clone() as AmobeaSprite;
+				var clone = this.Clone() as Amobea;
 				clone.Mover = new RandomMover(1f, 2000);
 				sprites.Add(clone);
 			}
@@ -58,15 +58,15 @@ namespace MonoGame.Core
 			Debug.Print(string.Format("Sprites in list : {0}", sprites.Count));
 		}
 
-		public AmobeaSprite(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed) : base(texture, position, mover, moveSpeed)
+		public Amobea(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed) : base(texture, position, mover, moveSpeed)
 		{
 		}
 
-		public AmobeaSprite(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color) : base(texture, position, mover, moveSpeed, color)
+		public Amobea(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color) : base(texture, position, mover, moveSpeed, color)
 		{
 		}
 
-		public AmobeaSprite(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color, float layer) : base(texture, position, mover, moveSpeed, color,layer)
+		public Amobea(Texture2D texture, Vector2 position, IMoveable mover, float moveSpeed, Color color, float layer) : base(texture, position, mover, moveSpeed, color,layer)
 		{
 		}
 	}

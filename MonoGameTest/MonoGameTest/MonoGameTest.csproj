@@ -49,14 +49,21 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Penumbra, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Penumbra.WindowsDX.1.4.0\lib\net45\MonoGame.Penumbra.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\brick_gray0.png" />
     <Content Include="Content\cobble_blood2.png" />
     <Content Include="Content\dragon.png" />
     <Content Include="Content\dwarf.png" />
+    <Content Include="Content\gold_pile.png" />
     <Content Include="Content\lava0.png" />
+    <Content Include="Content\pickup.wav" />
     <Content Include="Content\shining_eye.png" />
     <Content Include="Icon.ico" />
     <Content Include="LevelTest.xml">
@@ -66,6 +73,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoGame.Core\MonoGame.Core.csproj">
