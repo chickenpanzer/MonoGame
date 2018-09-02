@@ -20,6 +20,7 @@ namespace MonoGameTest
 		AmobeaSprite ams = null;
 
 		Level level = null;
+		Player player = null;
 
 		public Game1()
 		{
@@ -40,8 +41,7 @@ namespace MonoGameTest
 			Constants.ScreenHeight =  graphics.PreferredBackBufferHeight;
 			Constants.ScreenWidth = graphics.PreferredBackBufferWidth;
 
-			level = new Level(this);
-			level.LoadLevel("LevelTest.xml");
+			
 
 			base.Initialize();
 		}
@@ -56,15 +56,13 @@ namespace MonoGameTest
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			var texture = this.Content.Load<Texture2D>("Icon");
-			sb = new SpriteBase(texture, Vector2.Zero, new KeyboardMover(5f), 10f, Color.White, 1f);
-			sb.TextureScale = 0.2f;
 
-			ams = new AmobeaSprite(texture, new Vector2(100f,100f), new RandomMover(1f,10), 5f, Color.Blue, 0.5f);
-			ams.TextureScale = 0.5f;
+			player = new Player(this.Content.Load<Texture2D>("dwarf"), Vector2.Zero, new KeyboardMover(32), 32);
+			player.Layer = 1f;
 
-			sprites.Add(sb);
-			sprites.Add(ams);
+			level = new Level(this);
+			level.LoadLevel("LevelTest.xml");
+			level.Begin(player);	
 
 		}
 
@@ -88,13 +86,7 @@ namespace MonoGameTest
 				Exit();
 
 			// TODO: Add your update logic here
-			foreach (var sprite in sprites.ToArray())
-			{
-				sprite.Update(gameTime, sprites);
-			}
-
-			//Remove dead sprites from List
-			sprites.RemoveAll(s => !s.IsAlive);
+			level.Update(gameTime, sprites);
 
 			base.Update(gameTime);
 		}

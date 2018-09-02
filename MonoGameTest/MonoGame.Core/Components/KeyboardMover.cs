@@ -14,12 +14,24 @@ namespace MonoGame.Core
 
 		private float _moveSpeed = 0f;
 		private bool _isReverse;
+		private KeyboardState _previousState;
+
+		public KeyboardMover()
+		{
+			_moveSpeed = 0f;
+			_isReverse = false;
+			_previousState = Keyboard.GetState();
+		}
 
 		public KeyboardMover(float moveSpeed, bool reverse = false)
 		{
 			_moveSpeed = moveSpeed;
 			_isReverse = reverse;
+			_previousState = Keyboard.GetState();
 		}
+
+		public float MoveSpeed { get => _moveSpeed; set { _moveSpeed = value; } }
+		public int Interval { get => 0; set {;} }
 
 		public Vector2 GetNewPosition(SpriteBase sprite, GameTime gametime = null)
 		{
@@ -31,16 +43,16 @@ namespace MonoGame.Core
 
 			KeyboardState state = Keyboard.GetState();
 
-			if (state.IsKeyDown(Keys.Up))
+			if (state.IsKeyDown(Keys.Up) && _previousState.IsKeyUp(Keys.Up))
 				newPosition.Y -= moveValue;
 
-			if (state.IsKeyDown(Keys.Down))
+			if (state.IsKeyDown(Keys.Down) && _previousState.IsKeyUp(Keys.Down))
 				newPosition.Y += moveValue;
 
-			if (state.IsKeyDown(Keys.Right))
+			if (state.IsKeyDown(Keys.Right) && _previousState.IsKeyUp(Keys.Right))
 				newPosition.X += moveValue;
 
-			if (state.IsKeyDown(Keys.Left))
+			if (state.IsKeyDown(Keys.Left) && _previousState.IsKeyUp(Keys.Left))
 				newPosition.X -= moveValue;
 
 
@@ -62,6 +74,8 @@ namespace MonoGame.Core
 				while (newPosition.Y + sprite.SpriteHeight > Constants.ScreenHeight)
 					newPosition.Y -= 1;
 			}
+
+			_previousState = state;
 
 			return newPosition;
 

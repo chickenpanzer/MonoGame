@@ -10,6 +10,9 @@ namespace MonoGame.Core
 	public interface IMoveable
 	{
 
+		float MoveSpeed { get; set; }
+		int Interval { get; set; }
+
 		Vector2 GetNewPosition(SpriteBase sprite, GameTime gametime = null);
 
 	}

@@ -40,8 +40,8 @@ namespace MonoGame.Core
 			}
 		}
 
-		public Vector2 Position { get { return _spritePosition; } }
-		public Texture2D Texture { get { return _spriteTexture; } }
+		public Vector2 Position { get { return _spritePosition; } set { _spritePosition = value; } }
+		public Texture2D Texture { get { return _spriteTexture; } set { _spriteTexture = value; } }
 
 		public int SpriteHeight { get => _spriteHeight; }
 		public int SpriteWidth { get => _spriteWidth; }
@@ -54,6 +54,8 @@ namespace MonoGame.Core
 			get { return _isAlive; }
 			set { _isAlive = value; }
 		}
+
+		public float Layer { get => _layer; set => _layer = value; }
 		#endregion
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -74,6 +76,11 @@ namespace MonoGame.Core
 		}
 
 		#region Constructors
+		public SpriteBase()
+		{
+			_isAlive = true;
+		}
+
 		public SpriteBase(Texture2D texture, Vector2 position, IMoveable mover,float moveSpeed)
 		{
 			MoveSpeed = moveSpeed;

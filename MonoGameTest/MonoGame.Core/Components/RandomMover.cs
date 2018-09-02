@@ -12,10 +12,19 @@ namespace MonoGame.Core
 
 		private float _moveSpeed;
 		private double _timer = 0;
-		private double _interval = 0;
+		private int _interval = 0;
 		private Random _random = new Random();
 
-		public RandomMover(float moveSpeed, double moveInterval)
+		public float MoveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
+		public int Interval { get => _interval; set => _interval = value; }
+
+		public RandomMover()
+		{
+			_moveSpeed = 0f;
+			_interval = 1;
+		}
+
+		public RandomMover(float moveSpeed, int moveInterval)
 		{
 			_moveSpeed = moveSpeed;
 			_interval = moveInterval;
@@ -25,14 +34,14 @@ namespace MonoGame.Core
 		{
 			Vector2 newPosition = sprite.Position;
 
-			if (gametime == null || gametime.TotalGameTime.TotalMilliseconds - _timer < _interval)
+			if (gametime == null || gametime.TotalGameTime.TotalSeconds - _timer < _interval)
 			{
 				//Don't move
 				return newPosition;
 			}
 			
 			//Move
-			_timer = gametime.TotalGameTime.TotalMilliseconds;
+			_timer = gametime.TotalGameTime.TotalSeconds;
 
 			int verticalDirection = _random.Next(-1, 2);
 			int horizontalDirection = _random.Next(-1, 2);

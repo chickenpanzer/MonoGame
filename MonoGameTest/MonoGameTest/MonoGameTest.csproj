@@ -54,7 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\cobble_blood2.png" />
+    <Content Include="Content\dragon.png" />
+    <Content Include="Content\dwarf.png" />
     <Content Include="Content\lava0.png" />
+    <Content Include="Content\shining_eye.png" />
     <Content Include="Icon.ico" />
     <Content Include="LevelTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
