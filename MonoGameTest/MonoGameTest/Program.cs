@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MonoGameTest
+namespace MogulQuest
 {
 #if WINDOWS || LINUX
     /// <summary>

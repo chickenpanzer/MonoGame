@@ -9,8 +9,8 @@
     <ProjectGuid>{2B327D8E-86DD-45D2-9515-4A25AAED06E7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonoGameTest</RootNamespace>
-    <AssemblyName>MonoGameTest</AssemblyName>
+    <RootNamespace>MogulQuest</RootNamespace>
+    <AssemblyName>MogulQuest</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -74,6 +74,9 @@
     <Content Include="Content\pickup.wav" />
     <Content Include="Content\shining_eye.png" />
     <Content Include="Icon.ico" />
+    <Content Include="Level2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LevelTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

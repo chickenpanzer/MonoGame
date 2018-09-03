@@ -32,13 +32,14 @@ namespace MonoGame.Core
 					if (floor[i, j] != null && floor[i, j].Position == level.Player.Position)
 					{
 						if (floor[i, j].Texture.Name == this.ExitAssetName)
+						{
+							level.NextLevel = NextLevel;
 							return true;
+						}
 					}
 				}
 			}
-
 			return false;
-
 		}
 	}
 }

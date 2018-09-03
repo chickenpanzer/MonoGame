@@ -22,6 +22,7 @@ namespace MonoGame.Core
 		//Level size
 		private int _rows;
 		private int _columns;
+		private string _nextLevel;
 
 		private Game _game;
 		private List<IVictoryCondition> _victoryConditions = new List<IVictoryCondition>();
@@ -51,6 +52,7 @@ namespace MonoGame.Core
 		public int Rows { get => _rows; }
 		public int Columns { get => _columns; }
 		public Player Player { get => _player; }
+		public string NextLevel { get => _nextLevel; set => _nextLevel = value; }
 		#endregion
 
 		public Level(Game game, PenumbraComponent penumbra)
@@ -81,6 +83,7 @@ namespace MonoGame.Core
 
 				_rows = int.Parse(doc.Root.Attribute("rows").Value);
 				_columns = int.Parse(doc.Root.Attribute("columns").Value);
+				_nextLevel = doc.Root.Attribute("nextLevel").Value;
 
 			}
 

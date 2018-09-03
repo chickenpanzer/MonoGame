@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGameTest", "MonoGameTest\MonoGameTest.csproj", "{2B327D8E-86DD-45D2-9515-4A25AAED06E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogulQuest", "MonoGameTest\MogulQuest.csproj", "{2B327D8E-86DD-45D2-9515-4A25AAED06E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "MonoGame.Core\MonoGame.Core.csproj", "{853069D5-8E7A-4642-9F62-4DE770C2EAAC}"
 EndProject

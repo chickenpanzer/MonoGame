@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace MonoGameTest
+namespace MogulQuest
 {
 	/// <summary>
 	/// This is the main type for your game.
@@ -132,6 +132,17 @@ namespace MonoGameTest
 			//Check victory conditions
 			level.CheckVictoryConditions();
 
+			//Load Next Level
+			if (level.LevelCompleted)
+			{
+				player.Position = new Vector2(32f, 32f);
+
+				string nextLevel = level.NextLevel;
+
+				level = new Level(this, this.Penumbra);
+				level.LoadLevel(nextLevel);
+				level.Begin(player);
+			}
 			base.Update(gameTime);
 		}
 
