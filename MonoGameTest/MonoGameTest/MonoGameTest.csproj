@@ -40,6 +40,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
@@ -63,6 +66,7 @@
     <Content Include="Content\bgMusic.mp3" />
     <Content Include="Content\brick_gray0.png" />
     <Content Include="Content\cobble_blood2.png" />
+    <Content Include="Content\dngn_enter.png" />
     <Content Include="Content\dragon.png" />
     <Content Include="Content\dwarf.png" />
     <Content Include="Content\gold_pile.png" />
@@ -72,6 +76,7 @@
     <Content Include="Icon.ico" />
     <Content Include="LevelTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

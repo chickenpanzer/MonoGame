@@ -22,7 +22,11 @@ namespace MonoGame.Core
 		//Level size
 		private int _rows;
 		private int _columns;
+
 		private Game _game;
+		private List<IVictoryCondition> _victoryConditions = new List<IVictoryCondition>();
+		private bool _levelCompleted;
+
 		private PenumbraComponent _penumbra;
 		private List<SpriteBase> _actors = new List<SpriteBase>();
 		private Player _player;
@@ -40,7 +44,13 @@ namespace MonoGame.Core
 		#endregion
 
 		#region Public Properties
-		public SpriteBase Player { get; set; }
+		public List<SpriteBase> Actors { get => _actors; }
+		public List<IVictoryCondition> VictoryConditions { get => _victoryConditions; set => _victoryConditions = value; }
+		public bool LevelCompleted { get => _levelCompleted; set => _levelCompleted = value; }
+		public Dictionary<float, SpriteBase[,]> Layers { get => _layers; }
+		public int Rows { get => _rows; }
+		public int Columns { get => _columns; }
+		public Player Player { get => _player; }
 		#endregion
 
 		public Level(Game game, PenumbraComponent penumbra)
@@ -77,6 +87,9 @@ namespace MonoGame.Core
 			//Sizing level 
 			_layers.Add(0f, new SpriteBase[_rows, _columns]);
 
+			//Loading victory conditions
+			LoadVictoryConditions(doc);
+
 			//Loading content
 			LoadContent(_game, doc);
 			InitLayers(doc);
@@ -84,6 +97,50 @@ namespace MonoGame.Core
 			InitPenumbraHulls(_penumbra, _layers);
 		}
 
+		private void LoadVictoryConditions(XDocument doc)
+		{
+			//Victory Conditions
+			var vcInfo = doc.Root.Descendants("VictoryCondition");
+
+			Assembly assem = Assembly.GetExecutingAssembly();
+			string assemblyName = assem.GetName().Name;
+
+			foreach (var vc in vcInfo)
+			{
+				//CreateInstance class
+				var hndl = Activator.CreateInstance(assemblyName, assemblyName + "." + vc.Attribute("class").Value);
+				var instance = hndl.Unwrap();
+
+				//PickAllVictoryCondition
+				if (instance.GetType() == typeof(PickAllVictoryCondition))
+				{
+					string assetName = vc.Attribute("assetName").Value;
+					((PickAllVictoryCondition)instance).PickupAssetName = assetName;
+					this.VictoryConditions.Add((PickAllVictoryCondition)instance);
+				}
+
+				//ExitVictoryCondition
+				if (instance.GetType() == typeof(ExitVictoryCondition))
+				{
+					string assetName = vc.Attribute("assetName").Value;
+					string nextLevel = vc.Attribute("nextLevel").Value;
+					((ExitVictoryCondition)instance).ExitAssetName = assetName;
+					((ExitVictoryCondition)instance).NextLevel = nextLevel;
+					this.VictoryConditions.Add((ExitVictoryCondition)instance);
+				}
+			}
+		}
+
+		public void CheckVictoryConditions()
+		{
+			bool victory = true;
+			foreach (var condition in this.VictoryConditions)
+			{
+				victory &= condition.IsConditionComplete(this);
+			}
+
+			LevelCompleted = victory;
+		}
 		private void InitPenumbraHulls(PenumbraComponent penumbra, Dictionary<float, SpriteBase[,]> layers)
 		{
 			//Get floor layer
@@ -97,8 +154,6 @@ namespace MonoGame.Core
 						AddHull(penumbra, floor[i, j].Position);
 				}
 			}
-
-
 		}
 
 		private void AddHull(PenumbraComponent penumbra, Vector2 position)
@@ -211,7 +266,7 @@ namespace MonoGame.Core
 				}
 
 				//Add sprite in level sprites list
-				_actors.Add((SpriteBase)instance);
+				Actors.Add((SpriteBase)instance);
 			}
 		}
 
@@ -372,7 +427,7 @@ namespace MonoGame.Core
 			_player.Draw(gameTime, spriteBatch);
 
 			//Draw actors
-			foreach (var actor in _actors)
+			foreach (var actor in Actors)
 			{
 				actor.Draw(gameTime, spriteBatch);
 			}
@@ -400,7 +455,7 @@ namespace MonoGame.Core
 			UpdateActors(gameTime, sprites);
 
 			//Check for collisions between player and actors
-			foreach (var actor in _actors)
+			foreach (var actor in Actors)
 			{
 				if (_player.Position.Equals(actor.Position))
 				{
@@ -439,7 +494,7 @@ namespace MonoGame.Core
 			}
 			
 			//Remove
-			_actors.RemoveAll(m => m.IsAlive == false);
+			Actors.RemoveAll(m => m.IsAlive == false);
 		}
 
 		/// <summary>
@@ -467,7 +522,7 @@ namespace MonoGame.Core
 
 		private void UpdateActors(GameTime gameTime, List<SpriteBase> sprites)
 		{
-			foreach (var actor in _actors)
+			foreach (var actor in Actors)
 			{
 				Vector2 oldPosition = actor.Position;
 				actor.Update(gameTime, sprites);
@@ -476,8 +531,7 @@ namespace MonoGame.Core
 				int X = (int)actor.Position.X / 32;
 				int Y = (int)actor.Position.Y / 32;
 
-				SpriteBase[,] floorTiles = null;
-				_layers.TryGetValue(0f, out floorTiles);
+				_layers.TryGetValue(0f, out SpriteBase[,] floorTiles);
 
 				try
 				{
@@ -491,6 +545,8 @@ namespace MonoGame.Core
 
 				catch (Exception)
 				{
+					//Out of bounds : stay put !
+					actor.Position = oldPosition;
 				}
 			}
 		}
@@ -505,8 +561,7 @@ namespace MonoGame.Core
 			int X = (int)_player.Position.X / 32;
 			int Y = (int)_player.Position.Y / 32;
 
-			SpriteBase[,] floorTiles = null;
-			_layers.TryGetValue(0f, out floorTiles);
+			_layers.TryGetValue(0f, out SpriteBase[,] floorTiles);
 
 			try
 			{

@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Level name="LevelTest" rows="10" columns="10">
+  <VictoryConditions>
+    <VictoryCondition class="PickAllVictoryCondition" assetName="gold_pile"/>
+    <VictoryCondition class="PickAllVictoryCondition" assetName="apple"/>
+    <VictoryCondition class="ExitVictoryCondition" assetName="dngn_enter" nextLevel="next.xml"/>
+  </VictoryConditions>
   <Content>
     <!-- add texture ressources here-->
     <TextureRessource key ="cobble_blood2"/>
@@ -9,6 +14,7 @@
     <TextureRessource key ="gold_pile"/>
     <TextureRessource key ="brick_gray0"/>
     <TextureRessource key ="apple"/>
+    <TextureRessource key ="dngn_enter"/>
 
     <SoundRessource key ="pickup"/>
     <SoundRessource key ="apple_bite"/>
@@ -95,7 +101,7 @@
     <Tile posX ="6" posY="4" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="6" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="6" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="6" posY="7" isWalkable="True"><Layer assetName="dngn_enter" depth="0"/></Tile>
     <Tile posX ="6" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="9" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
      <!-- row 7  -->

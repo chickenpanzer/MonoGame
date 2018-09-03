@@ -41,9 +41,11 @@ namespace MonoGameTest
 
 		public Game1()
 		{
-			graphics = new GraphicsDeviceManager(this);
-			graphics.PreferredBackBufferWidth = 320;
-			graphics.PreferredBackBufferHeight = 320;
+			graphics = new GraphicsDeviceManager(this)
+			{
+				PreferredBackBufferWidth = 600,
+				PreferredBackBufferHeight = 600
+			};
 
 			Content.RootDirectory = "Content";
 
@@ -127,6 +129,9 @@ namespace MonoGameTest
 				level.Update(gameTime, sprites);
 			}
 
+			//Check victory conditions
+			level.CheckVictoryConditions();
+
 			base.Update(gameTime);
 		}
 
@@ -160,6 +165,11 @@ namespace MonoGameTest
 			if (player.Health <= 0)
 			{
 				spriteBatch.DrawString(font, "GAME OVER", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+			}
+
+			if (level.LevelCompleted)
+			{
+				spriteBatch.DrawString(font, "VICTOIRE !!!", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Green, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 			}
 
 			spriteBatch.End();
