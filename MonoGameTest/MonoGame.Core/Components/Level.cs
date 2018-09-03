@@ -11,6 +11,8 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
+using Penumbra;
 
 namespace MonoGame.Core
 {
@@ -21,8 +23,11 @@ namespace MonoGame.Core
 		private int _rows;
 		private int _columns;
 		private Game _game;
+		private PenumbraComponent _penumbra;
 		private List<SpriteBase> _actors = new List<SpriteBase>();
 		private Player _player;
+
+		private Song _bgMusic = null;
 
 		//Sounds
 		private Dictionary<string, SoundEffect> _soundEffects = null;
@@ -38,17 +43,22 @@ namespace MonoGame.Core
 		public SpriteBase Player { get; set; }
 		#endregion
 
-		public Level(Game game)
+		public Level(Game game, PenumbraComponent penumbra)
 		{
 			_textures = new Dictionary<string, Texture2D>();
 			_soundEffects = new Dictionary<string, SoundEffect>();
 			_layers = new Dictionary<float, SpriteBase[,]>();
 			_game = game;
+			_penumbra = penumbra;
 		}
 
 		public void Begin(Player player)
 		{
 			_player = player;
+			MediaPlayer.IsRepeating = true;
+			MediaPlayer.Volume = 0.4f;
+			MediaPlayer.Play(_bgMusic);
+
 		}
 
 		public void LoadLevel(string xmlFileName)
@@ -70,6 +80,34 @@ namespace MonoGame.Core
 			//Loading content
 			LoadContent(_game, doc);
 			InitLayers(doc);
+
+			InitPenumbraHulls(_penumbra, _layers);
+		}
+
+		private void InitPenumbraHulls(PenumbraComponent penumbra, Dictionary<float, SpriteBase[,]> layers)
+		{
+			//Get floor layer
+			_layers.TryGetValue(0f, out SpriteBase[,] floor);
+
+			for (int i = 0; i < _rows; i++)
+			{
+				for (int j = 0; j < _columns; j++)
+				{
+					if (floor[i, j] != null && ((Floor)floor[i, j]).IsWalkable == false)
+						AddHull(penumbra, floor[i, j].Position);
+				}
+			}
+
+
+		}
+
+		private void AddHull(PenumbraComponent penumbra, Vector2 position)
+		{
+			float x = position.X;
+			float y = position.Y;
+
+			Hull newHull = new Hull(position, new Vector2(x + 32, y), new Vector2(x + 32, y + 32), new Vector2(x, y + 32));
+			penumbra.Hulls.Add(newHull);
 		}
 
 		private void InitLayers(XDocument doc)
@@ -88,11 +126,11 @@ namespace MonoGame.Core
 				InitTileLayers(tile, posX, posY, ref assetName, ref depth);
 
 				//Mobs
-				InitTileActors(tile);
+				InitTileActors(tile, _penumbra);
 			}
 		}
 
-		private void InitTileActors(XElement tile)
+		private void InitTileActors(XElement tile, PenumbraComponent penumbra)
 		{
 			Assembly assem = Assembly.GetExecutingAssembly();
 			string assemblyName = assem.GetName().Name;
@@ -100,7 +138,7 @@ namespace MonoGame.Core
 
 			foreach (var actor in actors)
 			{
-				//Mob class
+				//CreateInstance class
 				var hndl = Activator.CreateInstance(assemblyName, assemblyName + "." + actor.Attribute("class").Value);
 				var instance = hndl.Unwrap();
 
@@ -115,45 +153,46 @@ namespace MonoGame.Core
 				((SpriteBase)instance).Position = new Vector2(posX * 32, posY * 32);
 				((SpriteBase)instance).Layer = 0.6f;
 
-				//Pickup logic
+				//Light emitting actor ?
+				try
+				{
+					string lightScale = actor.Attribute("lightScale").Value;
+
+					if (!string.IsNullOrEmpty(lightScale))
+					{
+						float.TryParse(lightScale, out float scale);
+
+						float x = ((SpriteBase)instance).Position.X + 16;
+						float y = ((SpriteBase)instance).Position.Y + 16;
+
+
+						penumbra.Lights.Add(new PointLight
+						{
+							Scale = new Vector2(scale), // Range of the light source (how far the light will travel)
+							ShadowType = ShadowType.Illuminated, // Will not lit hulls themselves
+							Color = Color.MonoGameOrange,
+							Position = new Vector2(x,y)
+						});
+					}
+				}
+				catch (Exception)
+				{
+				}
+
+
+				//Actor Pickup logic
 				if (instance.GetType() == typeof(Pickup))
 				{
-					var pickup = ((Pickup)instance);
-
-					pickup.Layer = 0.4f;
-
-					int.TryParse(actor.Attribute("healthValue").Value, out int healthValue);
-					int.TryParse(actor.Attribute("scoreValue").Value, out int scoreValue);
-					int.TryParse(actor.Attribute("attackValue").Value, out int attackValue);
-					int.TryParse(actor.Attribute("defenseValue").Value, out int defenseValue);
-
-					pickup.HealthValue = healthValue;
-					pickup.ScoreValue = scoreValue;
-					pickup.AttackValue = attackValue;
-					pickup.DefenseValue = defenseValue;
-					pickup.PickupSound = actor.Attribute("pickupSound").Value;
+					InitActorPickup(actor, instance);
 				}
 
-				//Monster logic
+				//Actor Monster logic
 				if (instance.GetType() == typeof(Monster))
 				{
-					var monster = ((Monster)instance);
-
-					monster.Layer = 0.5f;
-
-					int.TryParse(actor.Attribute("healthValue").Value, out int healthValue);
-					int.TryParse(actor.Attribute("scoreValue").Value, out int scoreValue);
-					int.TryParse(actor.Attribute("attackValue").Value, out int attackValue);
-					int.TryParse(actor.Attribute("defenseValue").Value, out int defenseValue);
-
-					monster.Health = healthValue;
-					monster.Score = scoreValue;
-					monster.Attack = attackValue;
-					monster.Defense = defenseValue;
-
+					InitActorMonster(actor, instance);
 				}
 
-				//Mover Class if any
+				//Actor Mover Class if any
 				var moverClass = actor.Descendants("Mover").FirstOrDefault();
 				if (moverClass != null)
 				{
@@ -171,9 +210,68 @@ namespace MonoGame.Core
 
 				}
 
-				//Add sprite in sprites
+				//Add sprite in level sprites list
 				_actors.Add((SpriteBase)instance);
 			}
+		}
+
+		private static void InitActorMonster(XElement actor, object instance)
+		{
+			var monster = ((Monster)instance);
+
+			monster.Layer = 0.5f;
+
+			int healthValue = 0;
+			int scoreValue = 0;
+			int attackValue = 0;
+			int defenseValue = 0;
+
+			if (actor.Attribute("healthValue") != null)
+				int.TryParse(actor.Attribute("healthValue").Value, out healthValue);
+
+			if (actor.Attribute("scoreValue") != null)
+				int.TryParse(actor.Attribute("scoreValue").Value, out scoreValue);
+
+			if (actor.Attribute("attackValue") != null)
+				int.TryParse(actor.Attribute("attackValue").Value, out attackValue);
+
+			if (actor.Attribute("defenseValue") != null)
+				int.TryParse(actor.Attribute("defenseValue").Value, out defenseValue);
+
+			monster.Health = healthValue;
+			monster.Score = scoreValue;
+			monster.Attack = attackValue;
+			monster.Defense = defenseValue;
+		}
+
+		private static void InitActorPickup(XElement actor, object instance)
+		{
+			var pickup = ((Pickup)instance);
+
+			pickup.Layer = 0.4f;
+
+			int healthValue = 0;
+			int scoreValue = 0;
+			int attackValue = 0;
+			int defenseValue = 0;
+
+			if (actor.Attribute("healthValue") != null)
+				int.TryParse(actor.Attribute("healthValue").Value, out healthValue);
+
+			if (actor.Attribute("scoreValue") != null)
+				int.TryParse(actor.Attribute("scoreValue").Value, out scoreValue);
+
+			if (actor.Attribute("attackValue") != null)
+				int.TryParse(actor.Attribute("attackValue").Value, out attackValue);
+
+			if (actor.Attribute("defenseValue") != null)
+				int.TryParse(actor.Attribute("defenseValue").Value, out defenseValue);
+
+			pickup.HealthValue = healthValue;
+			pickup.ScoreValue = scoreValue;
+			pickup.AttackValue = attackValue;
+			pickup.DefenseValue = defenseValue;
+			pickup.PickupSound = actor.Attribute("pickupSound").Value;
 		}
 
 		private void InitTileLayers(XElement tile, int posX, int posY, ref string assetName, ref float depth)
@@ -235,6 +333,15 @@ namespace MonoGame.Core
 			{
 				string key = si.Attribute("key").Value;
 				_soundEffects.Add(key, _game.Content.Load<SoundEffect>(key));
+			}
+
+			//BackgroundMusic
+			var bgInfo = root.Descendants("BackgroundMusic").FirstOrDefault();
+
+			if (bgInfo != null)
+			{
+				string key = bgInfo.Attribute("key").Value;
+				_bgMusic = _game.Content.Load<Song>(key);
 			}
 
 
@@ -312,6 +419,8 @@ namespace MonoGame.Core
 						_soundEffects.TryGetValue(item.PickupSound, out SoundEffect sound);
 						sound.CreateInstance().Play();
 						actor.IsAlive = false;
+
+						RemoveLightAtPosition(actor.Position);
 					}
 
 					if (actor.GetType() == typeof(Monster))
@@ -331,6 +440,29 @@ namespace MonoGame.Core
 			
 			//Remove
 			_actors.RemoveAll(m => m.IsAlive == false);
+		}
+
+		/// <summary>
+		/// Remove light if any after pickup object
+		/// </summary>
+		/// <param name="position"></param>
+		private void RemoveLightAtPosition(Vector2 position)
+		{
+			foreach (var light in _penumbra.Lights.ToArray())
+			{
+
+				float x = position.X + 16;
+				float y = position.Y + 16;
+
+				Vector2 lightPosition = new Vector2(x, y);
+
+
+				if (light.Position.Equals(lightPosition))
+				{
+					_penumbra.Lights.Remove(light);
+				}
+
+			}
 		}
 
 		private void UpdateActors(GameTime gameTime, List<SpriteBase> sprites)
@@ -383,7 +515,7 @@ namespace MonoGame.Core
 
 				if (!_player.Position.Equals(oldPosition))
 				{
-					_player.Health -= 2;
+					_player.Health -= 1;
 					Debug.Print(_player.ToString());
 
 				}

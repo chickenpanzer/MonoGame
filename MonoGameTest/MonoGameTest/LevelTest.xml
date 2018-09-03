@@ -7,9 +7,13 @@
     <TextureRessource key ="shining_eye"/>
     <TextureRessource key ="dragon"/>
     <TextureRessource key ="gold_pile"/>
-    <TextureRessource key ="brick_gray0"/>    
+    <TextureRessource key ="brick_gray0"/>
+    <TextureRessource key ="apple"/>
 
     <SoundRessource key ="pickup"/>
+    <SoundRessource key ="apple_bite"/>
+
+    <BackgroundMusic key ="bgMoonlight"/>
   </Content>
   <!-- define level tiles and layers here-->
   <Tiles>
@@ -51,7 +55,9 @@
     <Tile posX ="3" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="3" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="3" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
+      <Actor class="Pickup" assetName="apple" pickupSound="apple_bite" healthValue="10" />
+    </Tile>
     <Tile posX ="3" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -64,7 +70,7 @@
     <Tile posX ="4" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="4" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="4" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="4" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="4" posY="6" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="4" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="4" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="4" posY="9" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
@@ -72,10 +78,10 @@
     <Tile posX ="5" posY="0" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="5" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="5" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="5" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="5" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="5" posY="3" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
+    <Tile posX ="5" posY="4" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="5" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="5" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="5" posY="6" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="5" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="5" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="5" posY="9" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
@@ -83,10 +89,10 @@
     <Tile posX ="6" posY="0" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="6" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
     </Tile>
     <Tile posX ="6" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
-    <Tile posX ="6" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
+    <Tile posX ="6" posY="4" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="6" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -97,7 +103,7 @@
     <Tile posX ="7" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
     </Tile>
     <Tile posX ="7" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -112,15 +118,15 @@
     <Tile posX ="8" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25"/>
+      <Actor class="Pickup" assetName="apple" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
     </Tile>
     <Tile posX ="8" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Monster" assetName="shining_eye" healthValue="50" scoreValue="15" attackValue="20" defenseValue="25">
+      <Actor class="Monster" assetName="shining_eye" healthValue="50" scoreValue="15" attackValue="20">
         <Mover class="RandomMover" moveSpeed="32" interval="1"/>
       </Actor>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
     </Tile>
     <Tile posX ="8" posY="9" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
      <!-- row 9  -->
@@ -128,7 +134,7 @@
     <Tile posX ="9" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="9" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="9" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
     </Tile>
     <Tile posX ="9" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="9" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>

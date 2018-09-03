@@ -26,19 +26,16 @@ namespace MonoGameTest
 		#region Penumbra
 		// Store reference to lighting system.
 		PenumbraComponent penumbra;
+		public PenumbraComponent Penumbra { get => penumbra; }
 
 		// Create sample light source and shadow hull.
 		Light light = new PointLight
 		{
-			Scale = new Vector2(300f), // Range of the light source (how far the light will travel)
+			Scale = new Vector2(400f), // Range of the light source (how far the light will travel)
 			ShadowType = ShadowType.Solid, // Will not lit hulls themselves
 			Color = Color.MonoGameOrange
 		};
-		Hull hull = new Hull(new Vector2(1.0f), new Vector2(-1.0f, 1.0f), new Vector2(-1.0f), new Vector2(1.0f, -1.0f))
-		{
-			Position = new Vector2(200f, 240f),
-			Scale = new Vector2(10f)
-		};
+		
 		#endregion
 
 
@@ -54,8 +51,6 @@ namespace MonoGameTest
 			// Create the lighting system and add sample light and hull.
 			penumbra = new PenumbraComponent(this);
 			penumbra.Lights.Add(light);
-			//penumbra.Hulls.Add(hull);
-			penumbra.Hulls.Add(new Hull(new Vector2(64f, 64f), new Vector2(96f, 64f), new Vector2(96f, 128f), new Vector2(64f, 128f)));
 			//Penumbra
 
 		}
@@ -75,6 +70,7 @@ namespace MonoGameTest
 
 			// Initialize the lighting system.
 			penumbra.Initialize();
+			penumbra.Debug = false;
 
 			base.Initialize();
 		}
@@ -95,7 +91,7 @@ namespace MonoGameTest
 			player = new Player(this.Content.Load<Texture2D>("dwarf"), new Vector2(32f,32f), new KeyboardMover(32), 32);
 			player.Layer = 1f;
 
-			level = new Level(this);
+			level = new Level(this, this.Penumbra);
 			level.LoadLevel("LevelTest.xml");
 			level.Begin(player);	
 
@@ -122,18 +118,9 @@ namespace MonoGameTest
 
 
 			//Penumbra
-			// Animate light position and hull rotation.
-			light.Position = player.Position;
-				//new Vector2(400f, 240f) + // Offset origin
-				//new Vector2( // Position around origin
-				//	(float)Math.Cos(gameTime.TotalGameTime.TotalSeconds),
-				//	(float)Math.Sin(gameTime.TotalGameTime.TotalSeconds)) * 240f;
-			//hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
-
-
-
-
-
+			// Player light position
+			light.Position = new Vector2(player.Position.X + 16, player.Position.Y + 16);
+				
 			// TODO: Add your update logic here
 			if (player.Health > 0)
 			{
