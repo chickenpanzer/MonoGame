@@ -72,5 +72,115 @@ namespace MonoGame.Core
 			return newPosition;
 		}
 
+		public void Move(SpriteBase sprite, SpriteBase[,] floor, GameTime gameTime)
+		{
+			if (gameTime == null || gameTime.TotalGameTime.TotalSeconds - _timer < _interval)
+			{
+				return;
+			}
+
+			//Move
+			_timer = gameTime.TotalGameTime.TotalSeconds;
+
+			//Iddle - check input
+			if (sprite.MoveState == State.Iddle)
+			{
+
+				float targetX = sprite.Position.X;
+				float targetY = sprite.Position.Y;
+
+				int direction = _random.Next(0, 4);
+
+				switch (direction)
+				{
+					case 0:
+						targetY -= _moveSpeed;
+						sprite.MoveState = State.MovingUp;
+						break;
+					case 1:
+						targetY += _moveSpeed;
+						sprite.MoveState = State.MovingDown;
+						break;
+					case 2:
+						targetX -= _moveSpeed;
+						sprite.MoveState = State.MovingLeft;
+						break;
+					case 3:
+						targetX += _moveSpeed;
+						sprite.MoveState = State.MovingRight;
+						break;
+				}
+
+				sprite.SpriteDestination = new Vector2(targetX, targetY);
+			}
+
+			
+
+			//Check if movement is possible
+			var destinationTile = floor[sprite.GridDestinationX, sprite.GridDestinationY] as Floor;
+
+			if (sprite.MoveState != State.Iddle && destinationTile != null && destinationTile.IsWalkable)
+			{
+
+				float newX = sprite.Position.X;
+				float newY = sprite.Position.Y;
+				float speed = 0.15f;
+
+				//Pixels per cycle
+				double amount = speed * gameTime.ElapsedGameTime.TotalMilliseconds;
+
+				switch (sprite.MoveState)
+				{
+					case State.MovingUp:
+						if (sprite.Position.Y - (amount) <= sprite.SpriteDestination.Y)
+						{
+							sprite.Position = sprite.SpriteDestination;
+							sprite.MoveState = State.Iddle;
+						}
+						else
+							newY -= (int)(amount);
+						break;
+
+					case State.MovingDown:
+						if (sprite.Position.Y + (amount) >= sprite.SpriteDestination.Y)
+						{
+							sprite.Position = sprite.SpriteDestination;
+							sprite.MoveState = State.Iddle;
+						}
+						else
+							newY += (int)(amount);
+						break;
+
+					case State.MovingLeft:
+						if (sprite.Position.X - (amount) <= sprite.SpriteDestination.X)
+						{
+							sprite.Position = sprite.SpriteDestination;
+							sprite.MoveState = State.Iddle;
+						}
+						else
+							newX -= (int)(speed * gameTime.ElapsedGameTime.TotalMilliseconds);
+						break;
+
+					case State.MovingRight:
+						if (sprite.Position.X + (amount) >= sprite.SpriteDestination.X)
+						{
+							sprite.Position = sprite.SpriteDestination;
+							sprite.MoveState = State.Iddle;
+						}
+						else
+							newX += (int)(amount);
+						break;
+				}
+
+				//Set new sprite position
+				if (sprite.MoveState != State.Iddle)
+					sprite.Position = new Vector2(newX, newY);
+
+			}
+			else
+			{
+				sprite.MoveState = State.Iddle;
+			}
+		}
 	}
 }

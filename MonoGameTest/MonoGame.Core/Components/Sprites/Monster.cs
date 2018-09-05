@@ -40,6 +40,13 @@ namespace MonoGame.Core
 			Layer = layer;
 		}
 
+		public void Update(GameTime gameTime, List<SpriteBase> sprites, SpriteBase[,] floor)
+		{
+			//Move Sprite
+			if (_mover != null)
+				_mover.Move(this, floor, gameTime);
+		}
+
 		public override string ToString()
 		{
 			return string.Format("PosX={0} : PosY={1} : Health={2} : Score={3} : Attack={4} : Defense={5}", Position.X, Position.Y, Health, Score, Attack, Defense);

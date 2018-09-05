@@ -14,5 +14,7 @@ namespace MonoGame.Core
 		int Interval { get; set; }
 
 		Vector2 GetNewPosition(Vector2 actual, GameTime gametime = null);
+
+		void Move(SpriteBase sprite, SpriteBase[,] floor, GameTime gameTime);
 	}
 }

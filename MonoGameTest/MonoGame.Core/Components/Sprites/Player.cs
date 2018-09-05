@@ -40,7 +40,12 @@ namespace MonoGame.Core
 			Defense = 0;
 		}
 
-		
+		public void Update(GameTime gameTime, List<SpriteBase> sprites, SpriteBase[,] floor)
+		{
+			//Move Sprite
+			if (_mover != null)
+				_mover.Move(this, floor, gameTime);
+		}
 
 		public override string ToString()
 		{

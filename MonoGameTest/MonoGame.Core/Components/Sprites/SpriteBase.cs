@@ -8,12 +8,30 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Core
 {
+	public enum State
+	{
+		Iddle,
+		MovingUp,
+		MovingDown,
+		MovingRight,
+		MovingLeft
+	}
+
 	public class SpriteBase : Component , ICloneable
 	{
 
+		#region enumerations
+		
+		#endregion
+
 		#region Private fields
+		private State _state = State.Iddle;
+
 		protected Texture2D _spriteTexture = null;
 		protected Vector2 _spritePosition;
+		protected Vector2 _spriteDestination;
+
+		//Moving Behaviour
 		protected IMoveable _mover = null;
 
 		protected int _spriteHeight;
@@ -56,6 +74,14 @@ namespace MonoGame.Core
 		}
 
 		public float Layer { get => _layer; set => _layer = value; }
+
+		//Game Grid Position
+		public int GridX { get => (int)_spritePosition.X / 32; }
+		public int GridY { get => (int)_spritePosition.Y / 32; }
+		public int GridDestinationX { get => (int)_spriteDestination.X / 32; }
+		public int GridDestinationY { get => (int)_spriteDestination.Y / 32; }
+		public State MoveState { get => _state; set => _state = value; }
+		public Vector2 SpriteDestination { get => _spriteDestination; set => _spriteDestination = value; }
 		#endregion
 
 		public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

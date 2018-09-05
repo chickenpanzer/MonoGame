@@ -452,12 +452,12 @@ namespace MonoGame.Core
 			}
 
 			//Update player
-			UpdatePlayer(gameTime, sprites);
+			UpdatePlayer(gameTime, sprites, _layers);
 
 			//Update actors
-			UpdateActors(gameTime, sprites);
+			UpdateActors(gameTime, sprites, _layers);
 
-			//Check for collisions between player and actors
+			//Check for collisions between player and actors after movement
 			foreach (var actor in Actors)
 			{
 				if (_player.Position.Equals(actor.Position))
@@ -523,67 +523,34 @@ namespace MonoGame.Core
 			}
 		}
 
-		private void UpdateActors(GameTime gameTime, List<SpriteBase> sprites)
+		private void UpdateActors(GameTime gameTime, List<SpriteBase> sprites, Dictionary<float, SpriteBase[,]> layers)
 		{
+			layers.TryGetValue(0f, out SpriteBase[,] floor);
+
 			foreach (var actor in Actors)
 			{
-				Vector2 oldPosition = actor.Position;
-				actor.Update(gameTime, sprites);
-
-				//block illegal movement
-				int X = (int)actor.Position.X / 32;
-				int Y = (int)actor.Position.Y / 32;
-
-				_layers.TryGetValue(0f, out SpriteBase[,] floorTiles);
-
-				try
+				if (actor.GetType() == typeof(Monster))
 				{
-					if (((Floor)floorTiles[X, Y]).IsWalkable == false)
-						actor.Position = oldPosition;
-
-					if (!actor.Position.Equals(oldPosition))
-						Debug.Print(actor.ToString());
-
+					((Monster)actor).Update(gameTime, sprites, floor);
 				}
-
-				catch (Exception)
+				else
 				{
-					//Out of bounds : stay put !
-					actor.Position = oldPosition;
+					actor.Update(gameTime, sprites);
 				}
 			}
 		}
 
-		private void UpdatePlayer(GameTime gameTime, List<SpriteBase> sprites)
+		private void UpdatePlayer(GameTime gameTime, List<SpriteBase> sprites, Dictionary<float,SpriteBase[,]> layers )
 		{
 
-			Vector2 oldPosition = _player.Position;
-			_player.Update(gameTime, sprites);
+			layers.TryGetValue(0f, out SpriteBase[,] floor);
 
-			//block illegal movement
-			int X = (int)_player.Position.X / 32;
-			int Y = (int)_player.Position.Y / 32;
+			State prevState = _player.MoveState;
+			_player.Update(gameTime, sprites, floor);
 
-			_layers.TryGetValue(0f, out SpriteBase[,] floorTiles);
-
-			try
-			{
-				if (((Floor)floorTiles[X, Y]).IsWalkable == false)
-					_player.Position = oldPosition;
-
-				if (!_player.Position.Equals(oldPosition))
-				{
-					_player.Health -= 1;
-					Debug.Print(_player.ToString());
-
-				}
-			}
-			catch (Exception)
-			{
-				//Out of bounds : stay put !
-				_player.Position = oldPosition;
-			}
-
+			//if player has moved, remove 1 HP
+			if (prevState != State.Iddle && _player.MoveState == State.Iddle)
+				_player.Health -= 1;
 		}
 	}
 }
