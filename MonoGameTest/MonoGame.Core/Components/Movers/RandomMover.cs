@@ -86,8 +86,6 @@ namespace MonoGame.Core
 				//Move
 				_timer = gameTime.TotalGameTime.TotalSeconds;
 
-
-
 				float targetX = sprite.Position.X;
 				float targetY = sprite.Position.Y;
 

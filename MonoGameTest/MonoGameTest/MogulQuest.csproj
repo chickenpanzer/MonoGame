@@ -65,10 +65,12 @@
     <Content Include="Content\bgMoonlight.mp3" />
     <Content Include="Content\bgMusic.mp3" />
     <Content Include="Content\brick_gray0.png" />
+    <Content Include="Content\chain_mail1.png" />
     <Content Include="Content\cobble_blood2.png" />
     <Content Include="Content\dngn_enter.png" />
     <Content Include="Content\dragon.png" />
     <Content Include="Content\dwarf.png" />
+    <Content Include="Content\elven_broadsword.png" />
     <Content Include="Content\gold_pile.png" />
     <Content Include="Content\lava0.png" />
     <Content Include="Content\pickup.wav" />

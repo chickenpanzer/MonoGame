@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Level name="Level2" rows="10" columns="10" nextLevel="toto.xml">
+<Level name="Level2" rows="10" columns="10" nextLevel="LevelTest.xml">
   <VictoryConditions>
     <VictoryCondition class="PickAllVictoryCondition" assetName="gold_pile"/>
-    <VictoryCondition class="PickAllVictoryCondition" assetName="apple"/>
-    <VictoryCondition class="ExitVictoryCondition" assetName="dngn_enter" nextLevel="LevelTest.xml"/>
   </VictoryConditions>
   <Content>
     <!-- add texture ressources here-->
@@ -15,7 +13,9 @@
     <TextureRessource key ="brick_gray0"/>
     <TextureRessource key ="apple"/>
     <TextureRessource key ="dngn_enter"/>
-
+    <TextureRessource key ="elven_broadsword"/>
+    <TextureRessource key ="chain_mail1"/>
+    
     <!-- add sound ressources here-->
     <SoundRessource key ="pickup"/>
     <SoundRessource key ="apple_bite"/>
@@ -68,7 +68,7 @@
     </Tile>
     <Tile posX ="3" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="3" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="3" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -76,7 +76,7 @@
      <!-- row 4  -->
     <Tile posX ="4" posY="0" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="4" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="4" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="4" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -89,7 +89,7 @@
      <!-- row 5  -->
     <Tile posX ="5" posY="0" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="5" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="chain_mail1" pickupSound="pickup"  defenseValue="200"/>
     </Tile>
     <Tile posX ="5" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="5" posY="3" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
@@ -103,13 +103,13 @@
     <Tile posX ="6" posY="0" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="6" posY="1" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="6" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="4" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="6" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="elven_broadsword" pickupSound="pickup" attackValue="50"/>
     </Tile>
     <Tile posX ="6" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="6" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -119,12 +119,12 @@
     <Tile posX ="7" posY="1" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
     <Tile posX ="7" posY="2" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="7" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="7" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="7" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
@@ -136,15 +136,15 @@
     <Tile posX ="8" posY="3" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="4" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="5" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Pickup" assetName="apple" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="apple" pickupSound="pickup" scoreValue="15"  lightScale="100"/>
     </Tile>
     <Tile posX ="8" posY="6" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="7" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/></Tile>
     <Tile posX ="8" posY="8" isWalkable="True"><Layer assetName="cobble_blood2" depth="0"/>
-      <Actor class="Monster" assetName="shining_eye" healthValue="50" scoreValue="15" attackValue="20">
+      <Actor class="Monster" assetName="shining_eye" healthValue="50" scoreValue="15" attackValue="200">
         <Mover class="RandomMover" moveSpeed="32" interval="1"/>
       </Actor>
-      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" healthValue="-10" scoreValue="15" attackValue="20" defenseValue="25" lightScale="100"/>
+      <Actor class="Pickup" assetName="gold_pile" pickupSound="pickup" scoreValue="15" lightScale="100"/>
     </Tile>
     <Tile posX ="8" posY="9" isWalkable="False"><Layer assetName="brick_gray0" depth="0"/></Tile>
      <!-- row 9  -->

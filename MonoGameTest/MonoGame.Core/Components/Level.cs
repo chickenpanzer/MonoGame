@@ -458,6 +458,17 @@ namespace MonoGame.Core
 			UpdateActors(gameTime, sprites, _layers);
 
 			//Check for collisions between player and actors after movement
+			CheckCollisions();
+
+			//Remove dead actors
+			Actors.RemoveAll(m => m.IsAlive == false);
+		}
+
+		/// <summary>
+		/// Check collisions between player and actors
+		/// </summary>
+		private void CheckCollisions()
+		{
 			foreach (var actor in Actors)
 			{
 				if (_player.Position.Equals(actor.Position))
@@ -471,8 +482,6 @@ namespace MonoGame.Core
 						_player.Attack += item.AttackValue;
 						_player.Defense += item.DefenseValue;
 
-						Debug.Print(_player.ToString());
-
 						//play pickup sound
 						_soundEffects.TryGetValue(item.PickupSound, out SoundEffect sound);
 						sound.CreateInstance().Play();
@@ -485,7 +494,7 @@ namespace MonoGame.Core
 					{
 						var monster = ((Monster)actor);
 
-						_player.Health -= Math.Max(monster.Attack - _player.Defense,0);
+						_player.Health -= Math.Max(monster.Attack - _player.Defense, 0);
 						_player.Score += monster.Score;
 
 						//wearing armor
@@ -495,9 +504,9 @@ namespace MonoGame.Core
 					}
 				}
 			}
-			
-			//Remove
-			Actors.RemoveAll(m => m.IsAlive == false);
+
+			//floor player health
+			_player.Health = Math.Max(_player.Health, 0);
 		}
 
 		/// <summary>

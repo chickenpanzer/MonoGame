@@ -123,13 +123,12 @@ namespace MogulQuest
 			// Player light position
 			light.Position = new Vector2(player.Position.X + 16, player.Position.Y + 16);
 				
-			// TODO: Add your update logic here
 			if (player.Health > 0)
 			{
 				level.Update(gameTime, sprites);
 			}
 
-			//Check victory conditions
+			//Check level victory conditions
 			level.CheckVictoryConditions();
 
 			//Load Next Level
@@ -154,8 +153,6 @@ namespace MogulQuest
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			// TODO: Add your drawing code here
-
 			// Everything between penumbra.BeginDraw and penumbra.Draw will be
 			// lit by the lighting system.
 			penumbra.BeginDraw();
@@ -165,12 +162,15 @@ namespace MogulQuest
 
 			string score = string.Format("Score : {0} / Heath : {1} / Def : {2}", player.Score, player.Health, player.Defense);
 
+
+			//Draw sprites
 			spriteBatch.End();
 
 			penumbra.Draw(gameTime);
 
 			spriteBatch.Begin();
 
+			//Draw text
 			spriteBatch.DrawString(font, score, Vector2.Zero, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
 			if (player.Health <= 0)
@@ -184,8 +184,6 @@ namespace MogulQuest
 			}
 
 			spriteBatch.End();
-
-
 
 			base.Draw(gameTime);
 		}
