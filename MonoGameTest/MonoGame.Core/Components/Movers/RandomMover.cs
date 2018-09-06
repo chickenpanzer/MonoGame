@@ -74,17 +74,19 @@ namespace MonoGame.Core
 
 		public void Move(SpriteBase sprite, SpriteBase[,] floor, GameTime gameTime)
 		{
-			if (gameTime == null || gameTime.TotalGameTime.TotalSeconds - _timer < _interval)
-			{
-				return;
-			}
-
-			//Move
-			_timer = gameTime.TotalGameTime.TotalSeconds;
-
+			
 			//Iddle - check input
 			if (sprite.MoveState == State.Iddle)
 			{
+				if (gameTime == null || gameTime.TotalGameTime.TotalSeconds - _timer < _interval)
+				{
+					return;
+				}
+
+				//Move
+				_timer = gameTime.TotalGameTime.TotalSeconds;
+
+
 
 				float targetX = sprite.Position.X;
 				float targetY = sprite.Position.Y;
