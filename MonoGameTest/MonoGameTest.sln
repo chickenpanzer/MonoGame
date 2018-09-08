@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MogulQuest", "MonoGameTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "MonoGame.Core\MonoGame.Core.csproj", "{853069D5-8E7A-4642-9F62-4DE770C2EAAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolKit", "ToolKit\ToolKit.csproj", "{19CCDC5A-C743-4F58-AA2E-999919A4D19D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,14 @@ Global
 		{853069D5-8E7A-4642-9F62-4DE770C2EAAC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{853069D5-8E7A-4642-9F62-4DE770C2EAAC}.Release|x86.ActiveCfg = Release|Any CPU
 		{853069D5-8E7A-4642-9F62-4DE770C2EAAC}.Release|x86.Build.0 = Release|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Debug|x86.Build.0 = Debug|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Release|x86.ActiveCfg = Release|Any CPU
+		{19CCDC5A-C743-4F58-AA2E-999919A4D19D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

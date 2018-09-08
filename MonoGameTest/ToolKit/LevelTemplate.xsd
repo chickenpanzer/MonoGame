@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="Level">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="VictoryConditions" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="VictoryCondition" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="class" type="xs:string" />
+                  <xs:attribute name="assetName" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Content" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TextureRessource" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SoundRessource" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="BackgroundMusic" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Tiles" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Tile" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Layer" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="assetName" type="xs:string" />
+                        <xs:attribute name="depth" type="xs:string" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Actor" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Mover" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="class" type="xs:string" />
+                              <xs:attribute name="moveSpeed" type="xs:string" />
+                              <xs:attribute name="interval" type="xs:string" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="class" type="xs:string" />
+                        <xs:attribute name="assetName" type="xs:string" />
+                        <xs:attribute name="pickupSound" type="xs:string" />
+                        <xs:attribute name="healthValue" type="xs:string" />
+                        <xs:attribute name="scoreValue" type="xs:string" />
+                        <xs:attribute name="lightScale" type="xs:string" />
+                        <xs:attribute name="defenseValue" type="xs:string" />
+                        <xs:attribute name="attackValue" type="xs:string" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="posX" type="xs:string" />
+                  <xs:attribute name="posY" type="xs:string" />
+                  <xs:attribute name="isWalkable" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="rows" type="xs:string" />
+      <xs:attribute name="columns" type="xs:string" />
+      <xs:attribute name="nextLevel" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Level" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
