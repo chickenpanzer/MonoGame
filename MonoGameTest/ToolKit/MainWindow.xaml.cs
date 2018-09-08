@@ -27,9 +27,14 @@ namespace ToolKit
 			InitializeComponent();
 
 			//Load tempalte as datacontext
-			Level lvl = XMLHelper.ReadXMLToObject<Level>("LevelTemplate.xml");
+			
 
-			this.DataContext = lvl;
+			ToolKitDataContext context = new ToolKitDataContext();
+			context.LoadXMLTemplate("LevelTemplate.xml");
+			context.LoadTileImages("Content");
+
+
+			this.DataContext = context;
 			
 		}
 	}

@@ -22,7 +22,7 @@ namespace ToolKit {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public partial class Level {
+    public partial class Level : object, System.ComponentModel.INotifyPropertyChanged {
         
         private LevelVictoryConditionsVictoryCondition[] victoryConditionsField;
         
@@ -47,6 +47,7 @@ namespace ToolKit {
             }
             set {
                 this.victoryConditionsField = value;
+                this.RaisePropertyChanged("VictoryConditions");
             }
         }
         
@@ -58,6 +59,7 @@ namespace ToolKit {
             }
             set {
                 this.contentField = value;
+                this.RaisePropertyChanged("Content");
             }
         }
         
@@ -70,6 +72,7 @@ namespace ToolKit {
             }
             set {
                 this.tilesField = value;
+                this.RaisePropertyChanged("Tiles");
             }
         }
         
@@ -81,6 +84,7 @@ namespace ToolKit {
             }
             set {
                 this.nameField = value;
+                this.RaisePropertyChanged("name");
             }
         }
         
@@ -92,6 +96,7 @@ namespace ToolKit {
             }
             set {
                 this.rowsField = value;
+                this.RaisePropertyChanged("rows");
             }
         }
         
@@ -103,6 +108,7 @@ namespace ToolKit {
             }
             set {
                 this.columnsField = value;
+                this.RaisePropertyChanged("columns");
             }
         }
         
@@ -114,6 +120,16 @@ namespace ToolKit {
             }
             set {
                 this.nextLevelField = value;
+                this.RaisePropertyChanged("nextLevel");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -124,7 +140,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelVictoryConditionsVictoryCondition {
+    public partial class LevelVictoryConditionsVictoryCondition : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string classField;
         
@@ -138,6 +154,7 @@ namespace ToolKit {
             }
             set {
                 this.classField = value;
+                this.RaisePropertyChanged("class");
             }
         }
         
@@ -149,6 +166,16 @@ namespace ToolKit {
             }
             set {
                 this.assetNameField = value;
+                this.RaisePropertyChanged("assetName");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -159,7 +186,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelContent {
+    public partial class LevelContent : object, System.ComponentModel.INotifyPropertyChanged {
         
         private LevelContentTextureRessource[] textureRessourceField;
         
@@ -175,6 +202,7 @@ namespace ToolKit {
             }
             set {
                 this.textureRessourceField = value;
+                this.RaisePropertyChanged("TextureRessource");
             }
         }
         
@@ -186,6 +214,7 @@ namespace ToolKit {
             }
             set {
                 this.soundRessourceField = value;
+                this.RaisePropertyChanged("SoundRessource");
             }
         }
         
@@ -197,6 +226,16 @@ namespace ToolKit {
             }
             set {
                 this.backgroundMusicField = value;
+                this.RaisePropertyChanged("BackgroundMusic");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -207,7 +246,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelContentTextureRessource {
+    public partial class LevelContentTextureRessource : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string keyField;
         
@@ -219,6 +258,16 @@ namespace ToolKit {
             }
             set {
                 this.keyField = value;
+                this.RaisePropertyChanged("key");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -229,7 +278,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelContentSoundRessource {
+    public partial class LevelContentSoundRessource : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string keyField;
         
@@ -241,6 +290,16 @@ namespace ToolKit {
             }
             set {
                 this.keyField = value;
+                this.RaisePropertyChanged("key");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -251,7 +310,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelContentBackgroundMusic {
+    public partial class LevelContentBackgroundMusic : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string keyField;
         
@@ -263,6 +322,16 @@ namespace ToolKit {
             }
             set {
                 this.keyField = value;
+                this.RaisePropertyChanged("key");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -273,7 +342,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelTilesTile {
+    public partial class LevelTilesTile : object, System.ComponentModel.INotifyPropertyChanged {
         
         private LevelTilesTileLayer[] layerField;
         
@@ -293,6 +362,7 @@ namespace ToolKit {
             }
             set {
                 this.layerField = value;
+                this.RaisePropertyChanged("Layer");
             }
         }
         
@@ -304,6 +374,7 @@ namespace ToolKit {
             }
             set {
                 this.actorField = value;
+                this.RaisePropertyChanged("Actor");
             }
         }
         
@@ -315,6 +386,7 @@ namespace ToolKit {
             }
             set {
                 this.posXField = value;
+                this.RaisePropertyChanged("posX");
             }
         }
         
@@ -326,6 +398,7 @@ namespace ToolKit {
             }
             set {
                 this.posYField = value;
+                this.RaisePropertyChanged("posY");
             }
         }
         
@@ -337,6 +410,16 @@ namespace ToolKit {
             }
             set {
                 this.isWalkableField = value;
+                this.RaisePropertyChanged("isWalkable");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -347,7 +430,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelTilesTileLayer {
+    public partial class LevelTilesTileLayer : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string assetNameField;
         
@@ -361,6 +444,7 @@ namespace ToolKit {
             }
             set {
                 this.assetNameField = value;
+                this.RaisePropertyChanged("assetName");
             }
         }
         
@@ -372,6 +456,16 @@ namespace ToolKit {
             }
             set {
                 this.depthField = value;
+                this.RaisePropertyChanged("depth");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -382,7 +476,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelTilesTileActor {
+    public partial class LevelTilesTileActor : object, System.ComponentModel.INotifyPropertyChanged {
         
         private LevelTilesTileActorMover[] moverField;
         
@@ -410,6 +504,7 @@ namespace ToolKit {
             }
             set {
                 this.moverField = value;
+                this.RaisePropertyChanged("Mover");
             }
         }
         
@@ -421,6 +516,7 @@ namespace ToolKit {
             }
             set {
                 this.classField = value;
+                this.RaisePropertyChanged("class");
             }
         }
         
@@ -432,6 +528,7 @@ namespace ToolKit {
             }
             set {
                 this.assetNameField = value;
+                this.RaisePropertyChanged("assetName");
             }
         }
         
@@ -443,6 +540,7 @@ namespace ToolKit {
             }
             set {
                 this.pickupSoundField = value;
+                this.RaisePropertyChanged("pickupSound");
             }
         }
         
@@ -454,6 +552,7 @@ namespace ToolKit {
             }
             set {
                 this.healthValueField = value;
+                this.RaisePropertyChanged("healthValue");
             }
         }
         
@@ -465,6 +564,7 @@ namespace ToolKit {
             }
             set {
                 this.scoreValueField = value;
+                this.RaisePropertyChanged("scoreValue");
             }
         }
         
@@ -476,6 +576,7 @@ namespace ToolKit {
             }
             set {
                 this.lightScaleField = value;
+                this.RaisePropertyChanged("lightScale");
             }
         }
         
@@ -487,6 +588,7 @@ namespace ToolKit {
             }
             set {
                 this.defenseValueField = value;
+                this.RaisePropertyChanged("defenseValue");
             }
         }
         
@@ -498,6 +600,16 @@ namespace ToolKit {
             }
             set {
                 this.attackValueField = value;
+                this.RaisePropertyChanged("attackValue");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -508,7 +620,7 @@ namespace ToolKit {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class LevelTilesTileActorMover {
+    public partial class LevelTilesTileActorMover : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string classField;
         
@@ -524,6 +636,7 @@ namespace ToolKit {
             }
             set {
                 this.classField = value;
+                this.RaisePropertyChanged("class");
             }
         }
         
@@ -535,6 +648,7 @@ namespace ToolKit {
             }
             set {
                 this.moveSpeedField = value;
+                this.RaisePropertyChanged("moveSpeed");
             }
         }
         
@@ -546,6 +660,16 @@ namespace ToolKit {
             }
             set {
                 this.intervalField = value;
+                this.RaisePropertyChanged("interval");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -557,7 +681,7 @@ namespace ToolKit {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public partial class NewDataSet {
+    public partial class NewDataSet : object, System.ComponentModel.INotifyPropertyChanged {
         
         private Level itemsField;
         
@@ -569,6 +693,16 @@ namespace ToolKit {
             }
             set {
                 this.itemsField = value;
+                this.RaisePropertyChanged("Items");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
