@@ -57,6 +57,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\AssetToBitmapConverter.cs" />
     <Compile Include="Model\ItemRessource.cs" />
+    <Compile Include="Model\LevelGenerator.cs" />
     <Compile Include="Model\LevelTemplate.cs" />
     <Compile Include="Model\TileRessource.cs" />
     <Compile Include="Model\ToolKitDataContext.cs" />

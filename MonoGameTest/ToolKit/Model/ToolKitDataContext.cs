@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace ToolKit
 {
@@ -21,15 +22,28 @@ namespace ToolKit
 
 		public ToolKitDataContext()
 		{
-			_rows = new List<List<LevelTilesTile>>();
+			_rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();
 		}
 
 		public Level Level
 		{
-			get;
-			set;
+			get { return _level; }
+			set
+			{
+				_level = value;
+				RaisePropertyChanged();
+			}
 		}
-		public List<List<LevelTilesTile>> Rows { get => _rows; set => _rows = value; }
+
+		public ObservableCollection<ObservableCollection<LevelTilesTile>> Rows
+		{
+			get => _rows;
+			set
+			{
+				_rows = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public string SelectedAsset
 		{
@@ -50,6 +64,32 @@ namespace ToolKit
 				RaisePropertyChanged();
 			}
 		}
+
+		private int _rowsOption;
+
+		public int RowsOption
+		{
+			get { return _rowsOption; }
+			set { _rowsOption = value; RaisePropertyChanged(); }
+		}
+
+		private int _columnsOption;
+
+		public int ColumnsOption
+		{
+			get { return _columnsOption; }
+			set { _columnsOption = value; RaisePropertyChanged(); }
+		}
+
+		private string _levelNameOption;
+
+		public string LevelNameOption
+		{
+			get { return _levelNameOption; }
+			set { _levelNameOption = value; RaisePropertyChanged(); }
+		}
+
+
 
 		public RelayCommand SelectAssetCommand
 		{
@@ -78,7 +118,28 @@ namespace ToolKit
 		public RelayCommand GetTileInfoCommand
 		{
 			get => _getTileInfoCommand = _getTileInfoCommand ?? new RelayCommand(GetTileInfo, null);
-			set => _getTileInfoCommand = value; }
+			set => _getTileInfoCommand = value;
+		}
+
+		public RelayCommand GenerateLevelCommand
+		{
+			get => _generateLevelCommand = _generateLevelCommand ?? new RelayCommand(GenerateLevel, CanGenerate);
+			set => _generateLevelCommand = value;
+		}
+
+		private bool CanGenerate(object arg)
+		{
+			return (!string.IsNullOrEmpty(LevelNameOption) && RowsOption > 0 && ColumnsOption > 0);
+		}
+
+		//Generate new level
+		private void GenerateLevel(object obj)
+		{
+			var generator = new LevelGenerator(RowsOption, ColumnsOption);
+
+			Level = generator.GenerateLevel(LevelNameOption, SelectedAsset);
+			Rows = ExplodeLevel(Level);
+		}
 
 
 		/// <summary>
@@ -110,12 +171,14 @@ namespace ToolKit
 		public bool IsWalkableOption
 		{
 			get => _isWalkableOption;
-			set { _isWalkableOption = value;
+			set
+			{
+				_isWalkableOption = value;
 				RaisePropertyChanged();
 			}
 		}
 
-		
+
 
 		private void WriteXml(object obj)
 		{
@@ -127,41 +190,51 @@ namespace ToolKit
 			var tile = obj as LevelTilesTile;
 			var layer = tile.Layer[0];
 
-			if(!string.IsNullOrEmpty(SelectedAsset))
+			if (!string.IsNullOrEmpty(SelectedAsset))
 				layer.assetName = SelectedAsset;
 
-			if (!string.IsNullOrEmpty(SelectedItem))
-			{
-				LevelTilesTileActor actor = null;
 
-				if (tile.Actor == null)
+			LevelTilesTileActor actor = null;
+
+			if (tile.Actor == null)
+			{
+				tile.Actor = tile.Actor.Redim<LevelTilesTileActor>(true);
+				actor = new LevelTilesTileActor();
+				actor.@class = "Pickup";
+				actor.assetName = SelectedItem;
+				actor.attackValue = AttackOption;
+				actor.defenseValue = DefenseOption;
+				actor.scoreValue = ScoreOption;
+				actor.healthValue = HealthOption;
+				actor.lightScale = LightScaleOption;
+				tile.Actor[0] = actor;
+
+				RaisePropertyChanged("Level");
+
+			}
+			else
+			{
+				actor = tile.Actor[0];
+				actor.assetName = SelectedItem;
+				if (!string.IsNullOrEmpty(SelectedItem))
 				{
-					tile.Actor = tile.Actor.Redim<LevelTilesTileActor>(true);
-					actor = new LevelTilesTileActor();
-					actor.@class = "Pickup";
-					actor.assetName = SelectedItem;
 					actor.attackValue = AttackOption;
 					actor.defenseValue = DefenseOption;
 					actor.scoreValue = ScoreOption;
 					actor.healthValue = HealthOption;
 					actor.lightScale = LightScaleOption;
-					tile.Actor[0] = actor;
-
-					RaisePropertyChanged("Level");
-
 				}
 				else
 				{
-					actor = tile.Actor[0];
-					actor.assetName = SelectedItem;
-					actor.attackValue = AttackOption;
-					actor.defenseValue = DefenseOption;
-					actor.scoreValue = ScoreOption;
-					actor.healthValue = HealthOption;
-					actor.lightScale = LightScaleOption;
+					actor.attackValue = null;
+					actor.defenseValue = null;
+					actor.scoreValue = null;
+					actor.healthValue = null;
+					actor.lightScale = null;
 				}
 			}
-				
+
+
 			tile.isWalkable = IsWalkableOption.ToString();
 
 		}
@@ -176,7 +249,7 @@ namespace ToolKit
 			SelectedItem = (string)obj;
 		}
 
-		private List<List<LevelTilesTile>> _rows = null;
+		private ObservableCollection<ObservableCollection<LevelTilesTile>> _rows = null;
 		private string _selectedAsset;
 		private string _selectedItem;
 		private LevelTilesTile _selectedTile;
@@ -245,20 +318,22 @@ namespace ToolKit
 		private RelayCommand _writeXmlCommand = null;
 		private RelayCommand _getTileInfoCommand = null;
 		private RelayCommand _selectItemCommand;
+		private RelayCommand _generateLevelCommand;
+		private Level _level;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{
 			Level = XMLHelper.ReadXMLToObject<Level>(XMLFileName);
 
 			//Explode level in layers and rows
-			ExplodeLevel(Level, Rows);
+			Rows = ExplodeLevel(Level);
 
 		}
 
-		private void ExplodeLevel(Level level, List<List<LevelTilesTile>> rows)
+		private ObservableCollection<ObservableCollection<LevelTilesTile>> ExplodeLevel(Level level)
 		{
-
-			var row = new List<LevelTilesTile>();
+			var rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();
+			var row = new ObservableCollection<LevelTilesTile>();
 			string prevRow = "0";
 
 			//Order tiles by column then row
@@ -274,7 +349,7 @@ namespace ToolKit
 				else
 				{
 					rows.Add(row);
-					row = new List<LevelTilesTile>();
+					row = new ObservableCollection<LevelTilesTile>();
 					row.Add(tile);
 					prevRow = tile.posY;
 				}
@@ -282,6 +357,8 @@ namespace ToolKit
 
 			//Final row
 			rows.Add(row);
+
+			return rows;
 		}
 
 	}

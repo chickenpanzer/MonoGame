@@ -70,15 +70,16 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
-			</StackPanel>
+					<Button Content="Reset item" Command="{Binding SelectItemCommand}" Height="30" Width="Auto"/>
+				</StackPanel>
 			</Expander>
 		</StackPanel>
 		<!-- Design panel -->
-		<ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Grid.Row= "1" Grid.Column="0">
-		<ItemsControl x:Name="LevelPresenter" ItemsSource="{Binding Rows}"  >
+		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row= "1" Grid.Column="0">
+		<ItemsControl x:Name="LevelPresenter" ItemsSource="{Binding Rows, Mode=OneWay}"  >
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<ItemsControl x:Name="RowPresenter" ItemsSource="{Binding}" >
+					<ItemsControl x:Name="RowPresenter" ItemsSource="{Binding Mode=OneWay}" >
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
 								<StackPanel Orientation="Horizontal"/>
@@ -88,29 +89,23 @@
 							<DataTemplate>
 									<Grid>
 										<!-- Background -->
-										<Image Height="32" Width="32" Source="{Binding Path=Layer[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-										<Image.InputBindings>
-											<MouseBinding MouseAction="RightClick"  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Window}}, Path=DataContext.GetTileInfoCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Image}}, Path=DataContext}"/>
-
-											<MouseBinding Gesture="LeftClick" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Window}}, Path=DataContext.ApplyAssetCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Image}}, Path=DataContext}"/>
-										</Image.InputBindings>
-										</Image>
+										<Border BorderThickness=".8" BorderBrush="Red">
+											<Image Height="32" Width="32" Source="{Binding Path=Layer[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+										</Border>
 										<!-- Foreground -->
-										<Image Height="32" Width="32" Source="{Binding Path=Actor[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-											<Image.InputBindings>
+										<Image Height="32" Width="32" Source="{Binding Path=Actor[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+										<!-- Transparent Canvas on top : interception des actions souris -->
+										<Canvas Width="32" Height="32" Background="Transparent" >
+											<Canvas.InputBindings>
 												<MouseBinding MouseAction="RightClick"  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.GetTileInfoCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Image}}, Path=DataContext}"/>
+																AncestorType={x:Type Canvas}}, Path=DataContext}"/>
 
 												<MouseBinding Gesture="LeftClick" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.ApplyAssetCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
-																AncestorType={x:Type Image}}, Path=DataContext}"/>
-											</Image.InputBindings>
-										</Image>
+																AncestorType={x:Type Canvas}}, Path=DataContext}"/>
+											</Canvas.InputBindings>
+										</Canvas>
 									</Grid>
 								</DataTemplate>	
 						</ItemsControl.ItemTemplate>
@@ -157,6 +152,30 @@
 						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" Text="{Binding LightScaleOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 					</Grid>
 			</Expander>
+			<Expander Header="New Level" IsExpanded="False">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="Level Name" Grid.Row="0" Grid.Column="0"/>
+						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Text="{Binding LevelNameOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+						<TextBlock Text="Rows"  Grid.Row="1" Grid.Column="0"/>
+						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Text="{Binding RowsOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+						<TextBlock Text="Columns"  Grid.Row="2" Grid.Column="0"/>
+						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Text="{Binding ColumnsOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+						<Button Content="Generate !" Grid.Row="3" Grid.Column="0" Command="{Binding GenerateLevelCommand}" />	
+					</Grid>
+				</Expander>
 			</StackPanel>
 		</ScrollViewer>
 		
