@@ -182,7 +182,11 @@ namespace ToolKit
 
 		private void WriteXml(object obj)
 		{
-			XMLHelper.WriteObjectToXML<Level>("testWrite.xml", Level);
+			var writer = new LevelWriter();
+
+			var lvl = writer.AddRessourcesToLevel(Level);
+
+			XMLHelper.WriteObjectToXML<Level>("testWrite.xml", lvl);
 		}
 
 		private void ApplyAsset(object obj)

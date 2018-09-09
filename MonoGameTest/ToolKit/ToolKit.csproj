@@ -59,6 +59,7 @@
     <Compile Include="Model\ItemRessource.cs" />
     <Compile Include="Model\LevelGenerator.cs" />
     <Compile Include="Model\LevelTemplate.cs" />
+    <Compile Include="Model\LevelWriter.cs" />
     <Compile Include="Model\TileRessource.cs" />
     <Compile Include="Model\ToolKitDataContext.cs" />
     <Compile Include="XML\XMLHelper.cs" />
