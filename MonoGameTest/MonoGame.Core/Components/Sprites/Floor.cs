@@ -19,8 +19,6 @@ namespace MonoGame.Core
 			set { _isWalkable = value; }
 		}
 
-
-
 		public Floor()
 		{
 

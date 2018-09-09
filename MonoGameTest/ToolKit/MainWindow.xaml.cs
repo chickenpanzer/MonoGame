@@ -30,7 +30,7 @@ namespace ToolKit
 			
 
 			ToolKitDataContext context = new ToolKitDataContext();
-			context.LoadXMLTemplate("LevelTemplate.xml");
+			context.LoadXMLTemplate("TestWrite.xml");
 			
 			this.DataContext = context;
 			

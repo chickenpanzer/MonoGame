@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolKit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1000">
 
 	<Window.Resources>
 		<local:AssetToBitmapConverter x:Key="cnv"/>
+		<local:BorderColorConverter x:Key="borderConverter"/>
 		<local:TileRessource x:Key="bitmap"/>
 		<local:ItemRessource x:Key="items"/>
 	</Window.Resources>
@@ -21,8 +22,8 @@
 			<RowDefinition Height=".8*" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="8*"/>
-			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="7*"/>
+			<ColumnDefinition Width="3*"/>
 		</Grid.ColumnDefinitions>
 		
 		<!-- Toolbar -->
@@ -89,13 +90,17 @@
 							<DataTemplate>
 									<Grid>
 										<!-- Background -->
-										<Border BorderThickness=".8" BorderBrush="Red">
+										<Border BorderThickness=".8" BorderBrush="{Binding Path=isWalkable, Converter={StaticResource borderConverter}}" >
 											<Image Height="32" Width="32" Source="{Binding Path=Layer[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 										</Border>
 										<!-- Foreground -->
 										<Image Height="32" Width="32" Source="{Binding Path=Actor[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 										<!-- Transparent Canvas on top : interception des actions souris -->
 										<Canvas Width="32" Height="32" Background="Transparent" >
+											<!-- Debug 
+											<TextBlock Text="{Binding posX}" Foreground="White" Canvas.Top="0" Canvas.Left="0" />
+											<TextBlock Text="{Binding posY}" Foreground="White" Canvas.Top="16" Canvas.Left="18" />
+											-->
 											<Canvas.InputBindings>
 												<MouseBinding MouseAction="RightClick"  Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.GetTileInfoCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
@@ -131,25 +136,29 @@
 							<RowDefinition />
 							<RowDefinition />
 							<RowDefinition />
+							<RowDefinition />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition/>
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="Health Value" Grid.Row="0" Grid.Column="0"/>
-						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Text="{Binding HealthOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding HealthOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
 						<TextBlock Text="Score Value"  Grid.Row="1" Grid.Column="0"/>
-						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" Text="{Binding ScoreOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding ScoreOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
 						<TextBlock Text="Attack Value"  Grid.Row="2" Grid.Column="0"/>
-						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Text="{Binding AttackOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Text="{Binding AttackOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
 						<TextBlock Text="Defense Value"  Grid.Row="3" Grid.Column="0"/>
-						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1" Text="{Binding DefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding DefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
 						<TextBlock Text="Light Scale"  Grid.Row="4" Grid.Column="0"/>
-						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" Text="{Binding LightScaleOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="4" Grid.Column="1" Text="{Binding LightScaleOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+						<TextBlock Text="Pickup Sound"  Grid.Row="5" Grid.Column="0"/>
+						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding SoundListOption}" SelectedValue="{Binding SelectedSoundOption}"/>
 					</Grid>
 			</Expander>
 			<Expander Header="New Level" IsExpanded="False">

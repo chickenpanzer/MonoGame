@@ -55,26 +55,6 @@ namespace MonoGame.Core
 			if (state.IsKeyDown(Keys.Left) && _previousState.IsKeyUp(Keys.Left))
 				newPosition.X -= moveValue;
 
-
-			//////Prevent offScreen Movement
-			////if (newPosition.X < 0)
-			////	newPosition.X = 0;
-
-			////if (newPosition.Y < 0)
-			////	newPosition.Y = 0;
-
-			////if (newPosition.X  > Constants.ScreenWidth)
-			////{
-			////	while (newPosition.X  > Constants.ScreenWidth)
-			////		newPosition.X -= 1;
-			////}
-
-			////if (newPosition.Y  > Constants.ScreenHeight)
-			////{
-			////	while (newPosition.Y  > Constants.ScreenHeight)
-			////		newPosition.Y -= 1;
-			////}
-
 			_previousState = state;
 
 			return newPosition;
@@ -124,7 +104,7 @@ namespace MonoGame.Core
 			}
 
 			//Check if movement is possible
-			var destinationTile = floor[sprite.GridDestinationX, sprite.GridDestinationY] as Floor;
+			var destinationTile = floor[sprite.GridDestinationY, sprite.GridDestinationX] as Floor;
 
 			if (sprite.MoveState != State.Iddle && destinationTile != null && destinationTile.IsWalkable)
 			{

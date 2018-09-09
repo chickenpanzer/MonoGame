@@ -43,7 +43,7 @@ namespace MogulQuest
 		{
 			graphics = new GraphicsDeviceManager(this)
 			{
-				PreferredBackBufferWidth = 600,
+				PreferredBackBufferWidth = 800,
 				PreferredBackBufferHeight = 600
 			};
 
@@ -94,7 +94,8 @@ namespace MogulQuest
 			player.Layer = 1f;
 
 			level = new Level(this, this.Penumbra);
-			level.LoadLevel("LevelTest.xml");
+			level.LoadLevel("TestWrite.xml");
+			//level.LoadLevel("LevelTest.xml");
 			level.Begin(player);	
 
 		}

@@ -83,7 +83,8 @@ namespace MonoGame.Core
 
 				_rows = int.Parse(doc.Root.Attribute("rows").Value);
 				_columns = int.Parse(doc.Root.Attribute("columns").Value);
-				_nextLevel = doc.Root.Attribute("nextLevel").Value;
+				if (doc.Root.Attribute("nextLevel") != null)
+					_nextLevel = doc.Root.Attribute("nextLevel").Value;
 
 			}
 
@@ -95,6 +96,8 @@ namespace MonoGame.Core
 
 			//Loading content
 			LoadContent(_game, doc);
+
+			//Initialize layers
 			InitLayers(doc);
 
 			InitPenumbraHulls(_penumbra, _layers);
@@ -136,7 +139,7 @@ namespace MonoGame.Core
 
 		public void CheckVictoryConditions()
 		{
-			bool victory = true;
+			bool victory = (this.VictoryConditions.Count > 0);
 			foreach (var condition in this.VictoryConditions)
 			{
 				victory &= condition.IsConditionComplete(this);
@@ -196,6 +199,9 @@ namespace MonoGame.Core
 
 			foreach (var actor in actors)
 			{
+				if (actor.Attribute("class")== null)
+					break;
+
 				//CreateInstance class
 				var hndl = Activator.CreateInstance(assemblyName, assemblyName + "." + actor.Attribute("class").Value);
 				var instance = hndl.Unwrap();
@@ -329,7 +335,9 @@ namespace MonoGame.Core
 			pickup.ScoreValue = scoreValue;
 			pickup.AttackValue = attackValue;
 			pickup.DefenseValue = defenseValue;
-			pickup.PickupSound = actor.Attribute("pickupSound").Value;
+
+			if(actor.Attribute("pickupSound") != null)
+				pickup.PickupSound = actor.Attribute("pickupSound").Value;
 		}
 
 		private void InitTileLayers(XElement tile, int posX, int posY, ref string assetName, ref float depth)
@@ -357,11 +365,11 @@ namespace MonoGame.Core
 				//Ground Zero !
 				if (depth == 0f)
 				{
-					grid[posX, posY] = new Floor(texture, new Vector2(posX * 32, posY * 32), null, depth, isWalkable);
+					grid[posY, posX] = new Floor(texture, new Vector2(posX * 32, posY * 32), null, depth, isWalkable);
 				}
 				else
 				{
-					grid[posX, posY] = new SpriteBase(texture, new Vector2(posX * 32, posY * 32), null, 0f, Color.White, depth);
+					grid[posY, posX] = new SpriteBase(texture, new Vector2(posX * 32, posY * 32), null, 0f, Color.White, depth);
 				}
 			}
 		}
@@ -483,10 +491,13 @@ namespace MonoGame.Core
 						_player.Defense += item.DefenseValue;
 
 						//play pickup sound
-						_soundEffects.TryGetValue(item.PickupSound, out SoundEffect sound);
-						sound.CreateInstance().Play();
-						actor.IsAlive = false;
+						if (!string.IsNullOrEmpty(item.PickupSound))
+						{
+							_soundEffects.TryGetValue(item.PickupSound, out SoundEffect sound);
+							sound.CreateInstance().Play();
+						}
 
+						actor.IsAlive = false;
 						RemoveLightAtPosition(actor.Position);
 					}
 

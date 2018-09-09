@@ -23,6 +23,20 @@ namespace ToolKit
 		public ToolKitDataContext()
 		{
 			_rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();
+
+			// TODO: make sound loading dynamic
+			_soundListOption = new ObservableCollection<string>() { "NONE", "pickup", "apple_bite" };
+
+		}
+
+		public string SelectedSoundOption
+		{
+			get => _selectedSoundOption;
+			set
+			{
+				_selectedSoundOption = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		public Level Level
@@ -31,6 +45,16 @@ namespace ToolKit
 			set
 			{
 				_level = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public ObservableCollection<string> SoundListOption
+		{
+			get => _soundListOption;
+			set
+			{
+				_soundListOption = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -88,8 +112,6 @@ namespace ToolKit
 			get { return _levelNameOption; }
 			set { _levelNameOption = value; RaisePropertyChanged(); }
 		}
-
-
 
 		public RelayCommand SelectAssetCommand
 		{
@@ -156,6 +178,21 @@ namespace ToolKit
 			//Set selected asset and data
 			SelectedAsset = asset;
 			IsWalkableOption = walkable;
+
+			//Set item asset and data
+
+			if (tile.Actor != null)
+			{
+				var actor = tile.Actor[0];
+
+				HealthOption = actor.healthValue;
+				ScoreOption = actor.scoreValue;
+				AttackOption = actor.attackValue;
+				DefenseOption = actor.defenseValue;
+				SelectedItem = actor.assetName;
+				LightScaleOption = actor.lightScale;
+				SelectedSoundOption = actor.pickupSound;
+			}
 		}
 
 		public LevelTilesTile SelectedTile
@@ -200,47 +237,33 @@ namespace ToolKit
 
 			LevelTilesTileActor actor = null;
 
-			if (tile.Actor == null)
+			//Actor
+			actor = tile.Actor[0];
+			if (!string.IsNullOrEmpty(SelectedItem))
 			{
-				tile.Actor = tile.Actor.Redim<LevelTilesTileActor>(true);
-				actor = new LevelTilesTileActor();
-				actor.@class = "Pickup";
 				actor.assetName = SelectedItem;
+				actor.@class = "Pickup";
 				actor.attackValue = AttackOption;
 				actor.defenseValue = DefenseOption;
 				actor.scoreValue = ScoreOption;
 				actor.healthValue = HealthOption;
 				actor.lightScale = LightScaleOption;
-				tile.Actor[0] = actor;
-
-				RaisePropertyChanged("Level");
-
+				actor.pickupSound = SelectedSoundOption;
 			}
 			else
 			{
-				actor = tile.Actor[0];
-				actor.assetName = SelectedItem;
-				if (!string.IsNullOrEmpty(SelectedItem))
-				{
-					actor.attackValue = AttackOption;
-					actor.defenseValue = DefenseOption;
-					actor.scoreValue = ScoreOption;
-					actor.healthValue = HealthOption;
-					actor.lightScale = LightScaleOption;
-				}
-				else
-				{
-					actor.attackValue = null;
-					actor.defenseValue = null;
-					actor.scoreValue = null;
-					actor.healthValue = null;
-					actor.lightScale = null;
-				}
+				actor.@class = null;
+				actor.attackValue = null;
+				actor.defenseValue = null;
+				actor.scoreValue = null;
+				actor.healthValue = null;
+				actor.lightScale = null;
+				actor.pickupSound = null;
+				actor.assetName = null;
 			}
 
 
 			tile.isWalkable = IsWalkableOption.ToString();
-
 		}
 
 		private void SelectAsset(object obj)
@@ -324,6 +347,8 @@ namespace ToolKit
 		private RelayCommand _selectItemCommand;
 		private RelayCommand _generateLevelCommand;
 		private Level _level;
+		private ObservableCollection<string> _soundListOption;
+		private string _selectedSoundOption;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{
@@ -341,7 +366,7 @@ namespace ToolKit
 			string prevRow = "0";
 
 			//Order tiles by column then row
-			var tiles = level.Tiles.OrderBy(t => t.posY).ThenBy(t => t.posX);
+			var tiles = level.Tiles.OrderBy(t => int.Parse(t.posY)).ThenBy(t => int.Parse(t.posX));
 
 			foreach (var tile in tiles)
 			{
