@@ -55,7 +55,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\AssetToBitmapConverter.cs" />
+    <Compile Include="Model\ItemRessource.cs" />
     <Compile Include="Model\LevelTemplate.cs" />
+    <Compile Include="Model\TileRessource.cs" />
     <Compile Include="Model\ToolKitDataContext.cs" />
     <Compile Include="XML\XMLHelper.cs" />
     <Page Include="MainWindow.xaml">
@@ -98,16 +101,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\brick_gray0.png">
+    <Content Include="Content\Floor\brick_gray0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\cobble_blood2.png">
+    <Content Include="Content\Floor\cobble_blood2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\dngn_enter.png">
+    <Content Include="Content\Floor\dngn_enter.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\lava0.png">
+    <Content Include="Content\Floor\lava0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\apple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\chain_mail1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\elven_broadsword.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Items\gold_pile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LevelTemplate.xml">

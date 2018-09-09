@@ -61,6 +61,7 @@
     </Tile>
     <Tile posX ="1" posY="1" isWalkable="True">
       <Layer assetName="cobble_blood2" depth="0"/>
+      <Actor />
     </Tile>
     <Tile posX ="1" posY="2" isWalkable="True">
       <Layer assetName="cobble_blood2" depth="0"/>

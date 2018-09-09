@@ -31,9 +31,7 @@ namespace ToolKit
 
 			ToolKitDataContext context = new ToolKitDataContext();
 			context.LoadXMLTemplate("LevelTemplate.xml");
-			context.LoadTileImages("Content");
-
-
+			
 			this.DataContext = context;
 			
 		}
