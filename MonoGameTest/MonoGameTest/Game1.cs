@@ -23,6 +23,8 @@ namespace MogulQuest
 		Player player = null;
 		SpriteFont font = null;
 
+		private Camera _camera;
+
 		#region Penumbra
 		// Store reference to lighting system.
 		PenumbraComponent penumbra;
@@ -73,6 +75,9 @@ namespace MogulQuest
 			// Initialize the lighting system.
 			penumbra.Initialize();
 			penumbra.Debug = false;
+
+
+			_camera = new Camera();
 
 			base.Initialize();
 		}
@@ -143,6 +148,9 @@ namespace MogulQuest
 				level.LoadLevel(nextLevel);
 				level.Begin(player);
 			}
+
+			_camera.Follow(player);
+
 			base.Update(gameTime);
 		}
 
@@ -158,7 +166,7 @@ namespace MogulQuest
 			// lit by the lighting system.
 			penumbra.BeginDraw();
 
-			spriteBatch.Begin(SpriteSortMode.FrontToBack);
+			spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: _camera.Transform);
 			level.Draw(gameTime, spriteBatch);
 
 			string score = string.Format("Score : {0} / Heath : {1} / Def : {2}", player.Score, player.Health, player.Defense);
@@ -167,6 +175,7 @@ namespace MogulQuest
 			//Draw sprites
 			spriteBatch.End();
 
+			penumbra.Transform = _camera.Transform;
 			penumbra.Draw(gameTime);
 
 			spriteBatch.Begin();
