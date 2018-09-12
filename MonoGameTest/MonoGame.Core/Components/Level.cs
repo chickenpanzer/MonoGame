@@ -212,7 +212,6 @@ namespace MonoGame.Core
 				int.TryParse(tile.Attribute("posX").Value, out int posX);
 				int.TryParse(tile.Attribute("posY").Value, out int posY);
 
-
 				((SpriteBase)instance).Texture = texture;
 				((SpriteBase)instance).Position = new Vector2(posX * 32, posY * 32);
 				((SpriteBase)instance).Layer = 0.6f;
@@ -256,6 +255,13 @@ namespace MonoGame.Core
 					InitActorMonster(actor, instance);
 				}
 
+				//Actor FloorTileSpawner logic
+				if (instance.GetType() == typeof(LavaTileSpawner))
+				{
+					InitActorFloorTileSpawner(actor, instance);
+				}
+
+
 				//Actor Mover Class if any
 				var moverClass = actor.Descendants("Mover").FirstOrDefault();
 				if (moverClass != null)
@@ -277,6 +283,21 @@ namespace MonoGame.Core
 				//Add sprite in level sprites list
 				Actors.Add((SpriteBase)instance);
 			}
+		}
+
+		private void InitActorFloorTileSpawner(XElement actor, object instance)
+		{
+			var spawner = ((LavaTileSpawner)instance);
+
+			Layers.TryGetValue(0f, out SpriteBase[,] floor);
+			spawner.Floor = floor;
+
+			int.TryParse(actor.Attribute("interval").Value, out int interval);
+			spawner.Interval = interval;
+
+			bool.TryParse(actor.Attribute("isWalkable").Value, out bool isWalkable);
+			spawner.IsWalkable = isWalkable;
+
 		}
 
 		private static void InitActorMonster(XElement actor, object instance)
@@ -473,7 +494,8 @@ namespace MonoGame.Core
 		}
 
 		/// <summary>
-		/// Check collisions between player and actors
+		/// Check collisions between player and actors, 
+		/// and between actors themselves
 		/// </summary>
 		private void CheckCollisions()
 		{
@@ -513,6 +535,22 @@ namespace MonoGame.Core
 
 						actor.IsAlive = false;
 					}
+
+					if (actor.GetType() == typeof(LavaTileSpawner))
+					{
+						//instant death
+						Player.Health = 0;
+					}
+				}
+			}
+
+			//Lava consumes us all
+			foreach (var lava in Actors.Where(a => a.GetType() == typeof(LavaTileSpawner)))
+			{
+				foreach (var other in Actors.Where(a => a.GetType() != typeof(LavaTileSpawner)))
+				{
+					if (lava.Position.Equals(other.Position))
+						other.IsAlive = false;
 				}
 			}
 
@@ -547,15 +585,19 @@ namespace MonoGame.Core
 		{
 			layers.TryGetValue(0f, out SpriteBase[,] floor);
 
-			foreach (var actor in Actors)
+			foreach (var actor in Actors.ToArray())
 			{
 				if (actor.GetType() == typeof(Monster))
 				{
-					((Monster)actor).Update(gameTime, sprites, floor);
+					((Monster)actor).Update(gameTime, Actors, floor);
+				}
+				else if (actor.GetType() == typeof(LavaTileSpawner))
+				{
+					((LavaTileSpawner)actor).Update(gameTime, Actors, _penumbra);
 				}
 				else
 				{
-					actor.Update(gameTime, sprites);
+					actor.Update(gameTime, Actors);
 				}
 			}
 		}
