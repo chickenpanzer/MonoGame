@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
 
 namespace ToolKit
 {
@@ -133,8 +134,14 @@ namespace ToolKit
 
 		public RelayCommand WriteXmlCommand
 		{
-			get => _writeXmlCommand = _writeXmlCommand ?? new RelayCommand(WriteXml, null);
+			get => _writeXmlCommand = _writeXmlCommand ?? new RelayCommand(WriteXml, CanWriteXml);
 			set => _writeXmlCommand = value;
+		}
+
+		public RelayCommand ReadXmlCommand
+		{
+			get => _readXmlCommand = _readXmlCommand ?? new RelayCommand(ReadXml, null);
+			set => _readXmlCommand = value;
 		}
 
 		public RelayCommand GetTileInfoCommand
@@ -220,11 +227,45 @@ namespace ToolKit
 		private void WriteXml(object obj)
 		{
 			var writer = new LevelWriter();
-
 			var lvl = writer.AddRessourcesToLevel(Level);
 
-			XMLHelper.WriteObjectToXML<Level>("testWrite.xml", lvl);
+			//Prompt for file location
+			var win = new SaveFileDialog();
+			win.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			win.Filter = "Fichiers level (*.xml)|*.xml";
+
+			win.ShowDialog();
+
+			var fullPath = win.FileName;
+
+			if (!string.IsNullOrEmpty(fullPath))
+			{
+				XMLHelper.WriteObjectToXML<Level>(fullPath, lvl);
+			}
 		}
+
+		private void ReadXml(object obj)
+		{
+
+			var win = new OpenFileDialog();
+			win.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			win.Filter = "Fichiers level (*.xml)|*.xml";
+
+			win.ShowDialog();
+
+			var fullPath = win.FileName;
+
+			if (!string.IsNullOrEmpty(fullPath))
+			{
+				this.LoadXMLTemplate(fullPath);
+			}
+		}
+
+		private bool CanWriteXml(object arg)
+		{
+			return Level != null;
+		}
+
 
 		private void ApplyAsset(object obj)
 		{
@@ -349,6 +390,7 @@ namespace ToolKit
 		private Level _level;
 		private ObservableCollection<string> _soundListOption;
 		private string _selectedSoundOption;
+		private RelayCommand _readXmlCommand;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{

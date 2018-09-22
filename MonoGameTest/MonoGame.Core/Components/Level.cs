@@ -18,6 +18,7 @@ namespace MonoGame.Core
 {
 	public class Level : Component
 	{
+		private const int pix = 32;
 		#region Private
 		//Level size
 		private int _rows;
@@ -42,6 +43,7 @@ namespace MonoGame.Core
 
 		//Layers
 		private Dictionary<float, SpriteBase[,]> _layers = null;
+		private Vector2 _playerStartPosition;
 		#endregion
 
 		#region Public Properties
@@ -67,6 +69,9 @@ namespace MonoGame.Core
 		public void Begin(Player player)
 		{
 			_player = player;
+
+			_player.Position = _playerStartPosition;
+
 			MediaPlayer.IsRepeating = true;
 			MediaPlayer.Volume = 0.4f;
 			MediaPlayer.Play(_bgMusic);
@@ -83,6 +88,13 @@ namespace MonoGame.Core
 
 				_rows = int.Parse(doc.Root.Attribute("rows").Value);
 				_columns = int.Parse(doc.Root.Attribute("columns").Value);
+
+
+				string startPosition = doc.Root.Attribute("startPosition").Value;
+				var pos = startPosition.Split(',');
+
+				_playerStartPosition = new Vector2(float.Parse(pos[0]) * pix, float.Parse(pos[1]) * pix);
+
 				if (doc.Root.Attribute("nextLevel") != null)
 					_nextLevel = doc.Root.Attribute("nextLevel").Value;
 
@@ -147,11 +159,19 @@ namespace MonoGame.Core
 
 			LevelCompleted = victory;
 		}
+
+		/// <summary>
+		/// Init Hulls : each floor tile with IsWalkable property set to false will cast shadow by default
+		/// </summary>
+		/// <param name="penumbra"></param>
+		/// <param name="layers"></param>
 		private void InitPenumbraHulls(PenumbraComponent penumbra, Dictionary<float, SpriteBase[,]> layers)
 		{
 			//Get floor layer
 			_layers.TryGetValue(0f, out SpriteBase[,] floor);
 
+
+			// TODO: add castShadow property to floor layer to enable non walkable areas not to cast shadow
 			for (int i = 0; i < _rows; i++)
 			{
 				for (int j = 0; j < _columns; j++)
@@ -167,9 +187,11 @@ namespace MonoGame.Core
 			float x = position.X;
 			float y = position.Y;
 
-			Hull newHull = new Hull(position, new Vector2(x + 32, y), new Vector2(x + 32, y + 32), new Vector2(x, y + 32));
+			Hull newHull = new Hull(position, new Vector2(x + pix, y), new Vector2(x + pix, y + pix), new Vector2(x, y + pix));
 			penumbra.Hulls.Add(newHull);
 		}
+
+
 
 		private void InitLayers(XDocument doc)
 		{
@@ -213,7 +235,7 @@ namespace MonoGame.Core
 				int.TryParse(tile.Attribute("posY").Value, out int posY);
 
 				((SpriteBase)instance).Texture = texture;
-				((SpriteBase)instance).Position = new Vector2(posX * 32, posY * 32);
+				((SpriteBase)instance).Position = new Vector2(posX * pix, posY * pix);
 				((SpriteBase)instance).Layer = 0.6f;
 
 				//Light emitting actor ?
@@ -386,11 +408,11 @@ namespace MonoGame.Core
 				//Ground Zero !
 				if (depth == 0f)
 				{
-					grid[posY, posX] = new Floor(texture, new Vector2(posX * 32, posY * 32), null, depth, isWalkable);
+					grid[posY, posX] = new Floor(texture, new Vector2(posX * pix, posY * pix), null, depth, isWalkable);
 				}
 				else
 				{
-					grid[posY, posX] = new SpriteBase(texture, new Vector2(posX * 32, posY * 32), null, 0f, Color.White, depth);
+					grid[posY, posX] = new SpriteBase(texture, new Vector2(posX * pix, posY * pix), null, 0f, Color.White, depth);
 				}
 			}
 		}
@@ -435,7 +457,7 @@ namespace MonoGame.Core
 		}
 
 		/// <summary>
-		/// Draw level tiles.
+		/// Draw level : tiles, player and actors
 		/// </summary>
 		/// <param name="gameTime"></param>
 		/// <param name="spriteBatch"></param>
@@ -465,6 +487,11 @@ namespace MonoGame.Core
 			}
 		}
 
+		/// <summary>
+		/// Level Update logic
+		/// </summary>
+		/// <param name="gameTime"></param>
+		/// <param name="sprites"></param>
 		public override void Update(GameTime gameTime, List<SpriteBase> sprites)
 		{
 			//Update level layers
@@ -489,13 +516,13 @@ namespace MonoGame.Core
 			//Check for collisions between player and actors after movement
 			CheckCollisions();
 
-			//Remove dead actors
+			//Remove dead actors from actors
 			Actors.RemoveAll(m => m.IsAlive == false);
 		}
 
 		/// <summary>
 		/// Check collisions between player and actors, 
-		/// and between actors themselves
+		/// and between actors themselves.
 		/// </summary>
 		private void CheckCollisions()
 		{
@@ -544,7 +571,7 @@ namespace MonoGame.Core
 				}
 			}
 
-			//Lava consumes us all
+			//Lava consumes us all !!
 			foreach (var lava in Actors.Where(a => a.GetType() == typeof(LavaTileSpawner)))
 			{
 				foreach (var other in Actors.Where(a => a.GetType() != typeof(LavaTileSpawner)))

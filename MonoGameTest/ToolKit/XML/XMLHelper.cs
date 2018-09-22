@@ -25,11 +25,11 @@ namespace ToolKit
 			return result;
 		}
 
-		public static void WriteObjectToXML<T>(string xmlFileName, T objet)
+		public static void WriteObjectToXML<T>(string path, T objet)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
 
-			using (Stream fs = new FileStream(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, xmlFileName), FileMode.Create))
+			using (Stream fs = new FileStream(path, FileMode.Create))
 			using (XmlWriter writer = new XmlTextWriter(fs, Encoding.Unicode))
 			{
 				serializer.Serialize(writer, objet);

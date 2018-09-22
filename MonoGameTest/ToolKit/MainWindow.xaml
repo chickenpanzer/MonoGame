@@ -25,69 +25,76 @@
 			<ColumnDefinition Width="7*"/>
 			<ColumnDefinition Width="3*"/>
 		</Grid.ColumnDefinitions>
-		
+
 		<!-- Toolbar -->
 		<StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+			<Expander Header="File" IsExpanded="True">
+				<StackPanel Orientation="Horizontal">
+					<Button x:Name="ReadXml" Content="Open" Command="{Binding ReadXmlCommand}" Height="30" Width="50"/>
+					<Button x:Name="WriteXml" Content="Save" Command="{Binding WriteXmlCommand}" Height="30" Width="50"/>
+				</StackPanel>
+			</Expander>
 			<Expander Header="Floors" IsExpanded="False">
-			<StackPanel x:Name="FloorToolbar" Orientation="Horizontal"  Background="AntiqueWhite">
-				<ItemsControl x:Name="TexturePresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=bitmap}, Path=BitmapDictionary}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<StackPanel>
-						<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
-							<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+
+				<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+					<ItemsControl x:Name="TexturePresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=bitmap}, Path=BitmapDictionary}" >
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
+									<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.SelectAssetCommand}" CommandParameter="{Binding DataContext.Key, RelativeSource={RelativeSource Self}}">
-							<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
-						</Button>
-						</StackPanel>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-				<Button x:Name="WriteXml" Content="Save" Command="{Binding WriteXmlCommand}" Height="30" Width="50"/>
-			</StackPanel>
+										<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
+									</Button>
+								</StackPanel>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+
 			</Expander>
 			<Expander Header="Items" IsExpanded="False">
-			<StackPanel x:Name="ItemsToolbar" Orientation="Horizontal"  Background="CadetBlue">
-				<ItemsControl x:Name="ItemsPresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=items}, Path=BitmapDictionary}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<StackPanel>
-								<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
-								<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+				<StackPanel x:Name="ItemsToolbar" Orientation="Horizontal"  Background="CadetBlue">
+					<ItemsControl x:Name="ItemsPresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=items}, Path=BitmapDictionary}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
+									<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.SelectItemCommand}" CommandParameter="{Binding DataContext.Key, RelativeSource={RelativeSource Self}}">
-									<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
-								</Button>
-							</StackPanel>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+										<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
+									</Button>
+								</StackPanel>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
 					<Button Content="Reset item" Command="{Binding SelectItemCommand}" Height="30" Width="Auto"/>
 				</StackPanel>
 			</Expander>
 		</StackPanel>
 		<!-- Design panel -->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row= "1" Grid.Column="0">
-		<ItemsControl x:Name="LevelPresenter" ItemsSource="{Binding Rows, Mode=OneWay}"  >
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<ItemsControl x:Name="RowPresenter" ItemsSource="{Binding Mode=OneWay}" >
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Horizontal"/>
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
+			<ItemsControl x:Name="LevelPresenter" ItemsSource="{Binding Rows, Mode=OneWay}"  >
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ItemsControl x:Name="RowPresenter" ItemsSource="{Binding Mode=OneWay}" >
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal"/>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
 									<Grid>
 										<!-- Background -->
 										<Border BorderThickness=".8" BorderBrush="{Binding Path=isWalkable, Converter={StaticResource borderConverter}}" >
@@ -112,24 +119,24 @@
 											</Canvas.InputBindings>
 										</Canvas>
 									</Grid>
-								</DataTemplate>	
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 		</ScrollViewer>
-		
+
 		<!-- TileInfo-->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Grid.Column="1" Background="Bisque">
 			<StackPanel>
-			<Expander Header="Floor Options" IsExpanded="True">
-				<StackPanel>
-				<CheckBox x:Name="chkWalkable" Content="Walkable Tile" IsChecked="{Binding IsWalkableOption}"/>
-				</StackPanel>
-			</Expander>
-			<Expander Header="Item Options" IsExpanded="False">
-				<Grid>
+				<Expander Header="Floor Options" IsExpanded="True">
+					<StackPanel>
+						<CheckBox x:Name="chkWalkable" Content="Walkable Tile" IsChecked="{Binding IsWalkableOption}"/>
+					</StackPanel>
+				</Expander>
+				<Expander Header="Item Options" IsExpanded="False">
+					<Grid>
 						<Grid.RowDefinitions>
 							<RowDefinition />
 							<RowDefinition />
@@ -160,8 +167,8 @@
 						<TextBlock Text="Pickup Sound"  Grid.Row="5" Grid.Column="0"/>
 						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding SoundListOption}" SelectedValue="{Binding SelectedSoundOption}"/>
 					</Grid>
-			</Expander>
-			<Expander Header="New Level" IsExpanded="False">
+				</Expander>
+				<Expander Header="New Level" IsExpanded="False">
 					<Grid>
 						<Grid.RowDefinitions>
 							<RowDefinition />
@@ -182,12 +189,12 @@
 						<TextBlock Text="Columns"  Grid.Row="2" Grid.Column="0"/>
 						<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" Text="{Binding ColumnsOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-						<Button Content="Generate !" Grid.Row="3" Grid.Column="0" Command="{Binding GenerateLevelCommand}" />	
+						<Button Content="Generate !" Grid.Row="3" Grid.Column="0" Command="{Binding GenerateLevelCommand}" />
 					</Grid>
 				</Expander>
 			</StackPanel>
 		</ScrollViewer>
-		
+
 		<!-- Status Bar -->
 		<StatusBar x:Name="Status" Grid.Row="2" Grid.ColumnSpan="2" Background="Beige" >
 			<StatusBarItem>
@@ -204,7 +211,7 @@
 			</StatusBarItem>
 		</StatusBar>
 	</Grid>
-	
-	
-	
+
+
+
 </Window>

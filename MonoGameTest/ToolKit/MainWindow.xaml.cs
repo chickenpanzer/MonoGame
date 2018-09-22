@@ -25,15 +25,7 @@ namespace ToolKit
 		public MainWindow()
 		{
 			InitializeComponent();
-
-			//Load tempalte as datacontext
-			
-
-			ToolKitDataContext context = new ToolKitDataContext();
-			context.LoadXMLTemplate("TestWrite.xml");
-			
-			this.DataContext = context;
-			
+			this.DataContext = new ToolKitDataContext(); 
 		}
 	}
 }

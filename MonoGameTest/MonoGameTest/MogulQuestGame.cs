@@ -12,7 +12,7 @@ namespace MogulQuest
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
-	public class Game1 : Game
+	public class MogulQuestGame : Game
 	{
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
@@ -41,7 +41,7 @@ namespace MogulQuest
 		#endregion
 
 
-		public Game1()
+		public MogulQuestGame()
 		{
 			graphics = new GraphicsDeviceManager(this)
 			{
@@ -76,7 +76,7 @@ namespace MogulQuest
 			penumbra.Initialize();
 			penumbra.Debug = false;
 
-
+			//Init Camera
 			_camera = new Camera();
 
 			base.Initialize();
@@ -99,8 +99,7 @@ namespace MogulQuest
 			player.Layer = 1f;
 
 			level = new Level(this, this.Penumbra);
-			level.LoadLevel("TestWrite.xml");
-			//level.LoadLevel("LevelTest.xml");
+			level.LoadLevel("Enter.xml");
 			level.Begin(player);	
 
 		}
@@ -124,11 +123,11 @@ namespace MogulQuest
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-
 			//Penumbra
-			// Player light position
+			// Player light position : center player
 			light.Position = new Vector2(player.Position.X + 16, player.Position.Y + 16);
 				
+			//If player is alive
 			if (player.Health > 0)
 			{
 				level.Update(gameTime, sprites);
@@ -140,18 +139,30 @@ namespace MogulQuest
 			//Load Next Level
 			if (level.LevelCompleted)
 			{
-				player.Position = new Vector2(32f, 32f);
-
-				string nextLevel = level.NextLevel;
-
-				level = new Level(this, this.Penumbra);
-				level.LoadLevel(nextLevel);
-				level.Begin(player);
+				LoadLevel();
 			}
 
 			_camera.Follow(player);
 
 			base.Update(gameTime);
+		}
+
+
+		private void LoadLevel()
+		{
+			string nextLevel = level.NextLevel;
+
+			//reset penumbra lights exept player light
+			Penumbra.Lights.Clear();
+			Penumbra.Lights.Add(light);
+
+			//reset penumbra hulls
+			Penumbra.Hulls.Clear();
+
+			//Load level
+			level = new Level(this, this.Penumbra);
+			level.LoadLevel(nextLevel);
+			level.Begin(player);
 		}
 
 		/// <summary>
