@@ -9,9 +9,17 @@ using System.Windows;
 
 namespace MogulQuest
 {
+
+	enum GameState
+	{
+		GameRunning,
+		ChangingLevel
+	}
+
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
+	/// 
 	public class MogulQuestGame : Game
 	{
 		GraphicsDeviceManager graphics;
@@ -23,7 +31,10 @@ namespace MogulQuest
 		Player player = null;
 		SpriteFont font = null;
 
+		private GameState _gameState = GameState.GameRunning;
+
 		private Camera _camera;
+		private Transition _transition;
 
 		#region Penumbra
 		// Store reference to lighting system.
@@ -37,7 +48,7 @@ namespace MogulQuest
 			ShadowType = ShadowType.Solid, // Will not lit hulls themselves
 			Color = Color.MonoGameOrange
 		};
-		
+
 		#endregion
 
 
@@ -69,8 +80,8 @@ namespace MogulQuest
 		{
 			// TODO: Add your initialization logic here
 
-			Constants.ScreenHeight =  graphics.PreferredBackBufferHeight -32;
-			Constants.ScreenWidth = graphics.PreferredBackBufferWidth -32;
+			Constants.ScreenHeight = graphics.PreferredBackBufferHeight - 32;
+			Constants.ScreenWidth = graphics.PreferredBackBufferWidth - 32;
 
 			// Initialize the lighting system.
 			penumbra.Initialize();
@@ -95,12 +106,12 @@ namespace MogulQuest
 
 			font = this.Content.Load<SpriteFont>("BasicFont");
 
-			player = new Player(this.Content.Load<Texture2D>("dwarf"), new Vector2(32f,32f), new KeyboardMover(32), 32);
+			player = new Player(this.Content.Load<Texture2D>("dwarf"), new Vector2(32f, 32f), new KeyboardMover(32), 32);
 			player.Layer = 1f;
 
 			level = new Level(this, this.Penumbra);
 			level.LoadLevel("Enter.xml");
-			level.Begin(player);	
+			level.Begin(player);
 
 		}
 
@@ -123,26 +134,40 @@ namespace MogulQuest
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-			//Penumbra
-			// Player light position : center player
-			light.Position = new Vector2(player.Position.X + 16, player.Position.Y + 16);
-				
-			//If player is alive
-			if (player.Health > 0)
+
+			if (_gameState == GameState.ChangingLevel)
 			{
-				level.Update(gameTime, sprites);
+				//Init transition
+				if (_transition == null)
+					_transition = new Transition(LoadLevel);
+
+				_transition.Update(gameTime, null);
+
 			}
-
-			//Check level victory conditions
-			level.CheckVictoryConditions();
-
-			//Load Next Level
-			if (level.LevelCompleted)
+			else
 			{
-				LoadLevel();
-			}
 
-			_camera.Follow(player);
+				//Penumbra
+				// Player light position : center player
+				light.Position = new Vector2(player.Position.X + 16, player.Position.Y + 16);
+
+				//If player is alive
+				if (player.Health > 0)
+				{
+					level.Update(gameTime, sprites);
+				}
+
+				//Check level victory conditions
+				level.CheckVictoryConditions();
+
+				//Load Next Level
+				if (level.LevelCompleted)
+				{
+					_gameState = GameState.ChangingLevel;
+				}
+
+				_camera.Follow(player);
+			}
 
 			base.Update(gameTime);
 		}
@@ -163,6 +188,7 @@ namespace MogulQuest
 			level = new Level(this, this.Penumbra);
 			level.LoadLevel(nextLevel);
 			level.Begin(player);
+			_gameState = GameState.GameRunning;
 		}
 
 		/// <summary>
@@ -178,17 +204,17 @@ namespace MogulQuest
 			penumbra.BeginDraw();
 
 			spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: _camera.Transform);
+
 			level.Draw(gameTime, spriteBatch);
 
 			string score = string.Format("Score : {0} / Heath : {1} / Def : {2}", player.Score, player.Health, player.Defense);
 
-
-			//Draw sprites
 			spriteBatch.End();
 
 			penumbra.Transform = _camera.Transform;
 			penumbra.Draw(gameTime);
 
+			//Draw Text
 			spriteBatch.Begin();
 
 			//Draw text
@@ -205,6 +231,17 @@ namespace MogulQuest
 			}
 
 			spriteBatch.End();
+
+			//Level transition
+			if (_gameState == GameState.ChangingLevel)
+			{
+				spriteBatch.Begin();
+
+				_transition.Draw(gameTime, null);
+
+				spriteBatch.End();
+
+			}
 
 			base.Draw(gameTime);
 		}

@@ -60,6 +60,7 @@
     <Compile Include="Components\Sprites\Player.cs" />
     <Compile Include="Components\Movers\RandomMover.cs" />
     <Compile Include="Components\Sprites\SpriteBase.cs" />
+    <Compile Include="Components\Transition.cs" />
     <Compile Include="Components\VictoryConditions\ExitVictoryCondition.cs" />
     <Compile Include="Components\VictoryConditions\PickAllVictoryCondition.cs" />
     <Compile Include="Components\VictoryConditions\PickOneVictoryCondition.cs" />
