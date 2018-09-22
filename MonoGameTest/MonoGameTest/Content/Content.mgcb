@@ -110,30 +110,6 @@
 /processorParam:TextureFormat=Color
 /build:brick_gray0.png
 
-#begin brick_gray0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:brick_gray0.png
-
-#begin chain_mail1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:chain_mail1.png
-
 #begin chain_mail1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -193,18 +169,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:cobble_blood12.png
-
-#begin cobble_blood2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:cobble_blood2.png
 
 #begin cobble_blood2.png
 /importer:TextureImporter
@@ -530,30 +494,6 @@
 /processorParam:TextureFormat=Color
 /build:dngn_enter.png
 
-#begin dngn_enter.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:dngn_enter.png
-
-#begin dragon.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:dragon.png
-
 #begin dragon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -577,30 +517,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:dwarf.png
-
-#begin dwarf.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:dwarf.png
-
-#begin elven_broadsword.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:elven_broadsword.png
 
 #begin elven_broadsword.png
 /importer:TextureImporter
@@ -890,18 +806,6 @@
 /processorParam:TextureFormat=Color
 /build:gold_pile.png
 
-#begin gold_pile.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gold_pile.png
-
 #begin grey_dirt0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1153,18 +1057,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:lair3.png
-
-#begin lava0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:lava0.png
 
 #begin lava0.png
 /importer:TextureImporter
@@ -1784,18 +1676,6 @@
 /processorParam:TextureFormat=Color
 /build:shining_eye.png
 
-#begin shining_eye.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:shining_eye.png
-
 #begin snake0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1939,6 +1819,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:tomb3.png
+
+#begin transition.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:transition.png
 
 #begin tutorial_pad.png
 /importer:TextureImporter

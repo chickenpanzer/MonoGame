@@ -211,6 +211,7 @@
     <Content Include="Content\tomb1.png" />
     <Content Include="Content\tomb2.png" />
     <Content Include="Content\tomb3.png" />
+    <Content Include="Content\transition.png" />
     <Content Include="Content\tutorial_pad.png" />
     <Content Include="Content\volcanic_floor0.png" />
     <Content Include="Content\volcanic_floor1.png" />
@@ -223,6 +224,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
+    <Content Include="Level01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Level2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

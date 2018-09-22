@@ -90,6 +90,9 @@ namespace MogulQuest
 			//Init Camera
 			_camera = new Camera();
 
+			//Transition
+			_transition = new Transition(() => _gameState = GameState.GameRunning, this.Content.Load<Texture2D>("transition"));
+
 			base.Initialize();
 		}
 
@@ -134,15 +137,10 @@ namespace MogulQuest
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-
 			if (_gameState == GameState.ChangingLevel)
 			{
-				//Init transition
-				if (_transition == null)
-					_transition = new Transition(LoadLevel);
-
+				_transition.Reset();
 				_transition.Update(gameTime, null);
-
 			}
 			else
 			{
@@ -164,6 +162,7 @@ namespace MogulQuest
 				if (level.LevelCompleted)
 				{
 					_gameState = GameState.ChangingLevel;
+					LoadLevel();
 				}
 
 				_camera.Follow(player);
@@ -188,7 +187,7 @@ namespace MogulQuest
 			level = new Level(this, this.Penumbra);
 			level.LoadLevel(nextLevel);
 			level.Begin(player);
-			_gameState = GameState.GameRunning;
+
 		}
 
 		/// <summary>
@@ -225,10 +224,10 @@ namespace MogulQuest
 				spriteBatch.DrawString(font, "GAME OVER", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 			}
 
-			if (level.LevelCompleted)
-			{
-				spriteBatch.DrawString(font, "VICTOIRE !!!", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Green, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-			}
+			//if (level.LevelCompleted)
+			//{
+			//	spriteBatch.DrawString(font, "VICTOIRE !!!", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Green, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+			//}
 
 			spriteBatch.End();
 
@@ -237,7 +236,8 @@ namespace MogulQuest
 			{
 				spriteBatch.Begin();
 
-				_transition.Draw(gameTime, null);
+				if (_transition != null)
+					_transition.Draw(gameTime, spriteBatch);
 
 				spriteBatch.End();
 
