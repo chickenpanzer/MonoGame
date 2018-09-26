@@ -11,6 +11,7 @@ namespace MonoGame.Core
 {
 	public class Player : SpriteBase, IActor
 	{
+		#region private fields
 		private const int spriteSize = 32;
 		private int _defense;
 
@@ -21,7 +22,7 @@ namespace MonoGame.Core
 
 		private int _xSprite = 0;
 		private int _ySprite = 0;
-
+		#endregion
 
 		public int Health { get; set; }
 		public int Score { get; set; }

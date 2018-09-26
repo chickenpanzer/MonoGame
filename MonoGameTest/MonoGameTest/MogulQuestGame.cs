@@ -91,7 +91,7 @@ namespace MogulQuest
 			_camera = new Camera();
 
 			//Transition
-			_transition = new Transition(() => _gameState = GameState.GameRunning, this.Content.Load<Texture2D>("transition"));
+			_transition = new Transition(() => _gameState = GameState.GameRunning, LoadLevel,this.Content.Load<Texture2D>("transition"));
 
 			base.Initialize();
 		}
@@ -105,13 +105,15 @@ namespace MogulQuest
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// TODO: use this.Content to load your game content here
-
+			
+			//Fonts
 			font = this.Content.Load<SpriteFont>("BasicFont");
 
+			//Player
 			player = new Player(this.Content.Load<Texture2D>("death"), new Vector2(32f, 32f), new KeyboardMover(32), 32);
 			player.Layer = 1f;
 
+			//Level
 			level = new Level(this, this.Penumbra);
 			level.LoadLevel("Enter.xml");
 			level.Begin(player);
@@ -162,11 +164,10 @@ namespace MogulQuest
 				if (level.LevelCompleted)
 				{
 					_gameState = GameState.ChangingLevel;
-					LoadLevel();
 				}
-
-				_camera.Follow(player);
 			}
+
+			_camera.Follow(player);
 
 			base.Update(gameTime);
 		}
@@ -223,11 +224,6 @@ namespace MogulQuest
 			{
 				spriteBatch.DrawString(font, "GAME OVER", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 			}
-
-			//if (level.LevelCompleted)
-			//{
-			//	spriteBatch.DrawString(font, "VICTOIRE !!!", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Green, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
-			//}
 
 			spriteBatch.End();
 
