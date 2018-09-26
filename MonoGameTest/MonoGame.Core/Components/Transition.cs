@@ -56,7 +56,7 @@ namespace MonoGame.Core
 		{
 			foreach (var fadeItem in _fadeItems)
 			{
-				spriteBatch.Draw(_texture, new Vector2(fadeItem.PosX - 16, fadeItem.PosY - 16), null, Color.Gray, 0f, Vector2.Zero, fadeItem.Scale, SpriteEffects.None, 0f);
+				spriteBatch.Draw(_texture, new Vector2(fadeItem.PosX - 16, fadeItem.PosY - 16), null, Color.MonoGameOrange, 0f, new Vector2(1,1), fadeItem.Scale, SpriteEffects.None, 0f);
 			}
 		}
 

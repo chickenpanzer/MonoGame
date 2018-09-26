@@ -112,7 +112,7 @@ namespace MonoGame.Core
 				}
 
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 			}
 	

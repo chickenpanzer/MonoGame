@@ -109,7 +109,7 @@ namespace MogulQuest
 
 			font = this.Content.Load<SpriteFont>("BasicFont");
 
-			player = new Player(this.Content.Load<Texture2D>("dwarf"), new Vector2(32f, 32f), new KeyboardMover(32), 32);
+			player = new Player(this.Content.Load<Texture2D>("death"), new Vector2(32f, 32f), new KeyboardMover(32), 32);
 			player.Layer = 1f;
 
 			level = new Level(this, this.Penumbra);

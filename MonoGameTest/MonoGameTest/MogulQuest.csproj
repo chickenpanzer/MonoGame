@@ -88,6 +88,7 @@
     <Content Include="Content\crystal_floor3.png" />
     <Content Include="Content\crystal_floor4.png" />
     <Content Include="Content\crystal_floor5.png" />
+    <Content Include="Content\death.png" />
     <Content Include="Content\dirt0.png" />
     <Content Include="Content\dirt1.png" />
     <Content Include="Content\dirt2.png" />

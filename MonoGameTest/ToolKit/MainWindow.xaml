@@ -168,6 +168,9 @@
 						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding SoundListOption}" SelectedValue="{Binding SelectedSoundOption}"/>
 					</Grid>
 				</Expander>
+				<Expander Header="Monster Options" IsExpanded="False">
+					
+				</Expander>
 				<Expander Header="New Level" IsExpanded="False">
 					<Grid>
 						<Grid.RowDefinitions>
