@@ -12,33 +12,28 @@ using Microsoft.Win32;
 
 namespace ToolKit
 {
-	public class ToolKitDataContext : INotifyPropertyChanged
+	public class ToolKitDataContext : ViewModelBase
 	{
-		//InotifyPropertyChanged
-		public event PropertyChangedEventHandler PropertyChanged;
-		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
+		
 		public ToolKitDataContext()
 		{
 			_rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();
 
 			// TODO: make sound loading dynamic
 			_soundListOption = new ObservableCollection<string>() { "NONE", "pickup", "apple_bite" };
+			_monsterClassOption = new ObservableCollection<string>() { "Monster", "Amobea" };
 
+
+			//Items and Monster datacontext
+			ItemsViewModel = new ItemsViewModel();
+			MonsterViewModel = new MonsterViewModel();
 		}
 
-		public string SelectedSoundOption
-		{
-			get => _selectedSoundOption;
-			set
-			{
-				_selectedSoundOption = value;
-				RaisePropertyChanged();
-			}
-		}
+		public ItemsViewModel ItemsViewModel { get; set; }
+
+		public MonsterViewModel MonsterViewModel { get; set; }
+
+		
 
 		public Level Level
 		{
@@ -56,6 +51,16 @@ namespace ToolKit
 			set
 			{
 				_soundListOption = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public ObservableCollection<string> MonsterClassOption
+		{
+			get => _monsterClassOption;
+			set
+			{
+				_monsterClassOption = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -80,15 +85,7 @@ namespace ToolKit
 			}
 		}
 
-		public string SelectedItem
-		{
-			get => _selectedItem;
-			set
-			{
-				_selectedItem = value;
-				RaisePropertyChanged();
-			}
-		}
+		
 
 		private int _rowsOption;
 
@@ -122,8 +119,14 @@ namespace ToolKit
 
 		public RelayCommand SelectItemCommand
 		{
-			get => _selectItemCommand = _selectItemCommand ?? new RelayCommand(SelectItem, null);
+			get => _selectItemCommand = _selectItemCommand ?? new RelayCommand(ItemsViewModel.SelectItem, null);
 			set => _selectItemCommand = value;
+		}
+
+		public RelayCommand SelectMonsterCommand
+		{
+			get => _selectMonsterCommand = _selectMonsterCommand ?? new RelayCommand(MonsterViewModel.SelectMonster, null);
+			set => _selectMonsterCommand = value;
 		}
 
 		public RelayCommand ApplyAssetCommand
@@ -192,13 +195,13 @@ namespace ToolKit
 			{
 				var actor = tile.Actor[0];
 
-				HealthOption = actor.healthValue;
-				ScoreOption = actor.scoreValue;
-				AttackOption = actor.attackValue;
-				DefenseOption = actor.defenseValue;
-				SelectedItem = actor.assetName;
-				LightScaleOption = actor.lightScale;
-				SelectedSoundOption = actor.pickupSound;
+				ItemsViewModel.HealthOption = actor.healthValue;
+				ItemsViewModel.ScoreOption = actor.scoreValue;
+				ItemsViewModel.AttackOption = actor.attackValue;
+				ItemsViewModel.DefenseOption = actor.defenseValue;
+				ItemsViewModel.SelectedItem = actor.assetName;
+				ItemsViewModel.LightScaleOption = actor.lightScale;
+				ItemsViewModel.SelectedSoundOption = actor.pickupSound;
 			}
 		}
 
@@ -221,8 +224,6 @@ namespace ToolKit
 				RaisePropertyChanged();
 			}
 		}
-
-
 
 		private void WriteXml(object obj)
 		{
@@ -266,7 +267,10 @@ namespace ToolKit
 			return Level != null;
 		}
 
-
+		/// <summary>
+		/// On click, apply assets to corresponding tile
+		/// </summary>
+		/// <param name="obj"></param>
 		private void ApplyAsset(object obj)
 		{
 			var tile = obj as LevelTilesTile;
@@ -280,16 +284,25 @@ namespace ToolKit
 
 			//Actor
 			actor = tile.Actor[0];
-			if (!string.IsNullOrEmpty(SelectedItem))
+			if (!string.IsNullOrEmpty(ItemsViewModel.SelectedItem))
 			{
-				actor.assetName = SelectedItem;
+				actor.assetName = ItemsViewModel.SelectedItem;
 				actor.@class = "Pickup";
-				actor.attackValue = AttackOption;
-				actor.defenseValue = DefenseOption;
-				actor.scoreValue = ScoreOption;
-				actor.healthValue = HealthOption;
-				actor.lightScale = LightScaleOption;
-				actor.pickupSound = SelectedSoundOption;
+				actor.attackValue = ItemsViewModel.AttackOption;
+				actor.defenseValue = ItemsViewModel.DefenseOption;
+				actor.scoreValue = ItemsViewModel.ScoreOption;
+				actor.healthValue = ItemsViewModel.HealthOption;
+				actor.lightScale = ItemsViewModel.LightScaleOption;
+				actor.pickupSound = ItemsViewModel.SelectedSoundOption;
+			}
+			else if (!string.IsNullOrEmpty(MonsterViewModel.SelectedMonster))
+			{
+				actor.assetName = MonsterViewModel.SelectedMonster;
+				actor.@class = MonsterViewModel.SelectedMonsterClassOption;
+				actor.attackValue = MonsterViewModel.MonsterAttackOption;
+				actor.defenseValue = MonsterViewModel.MonsterDefenseOption;
+				actor.scoreValue = MonsterViewModel.MonsterScoreOption;
+				actor.healthValue = MonsterViewModel.MonsterHealthOption;
 			}
 			else
 			{
@@ -312,74 +325,13 @@ namespace ToolKit
 			SelectedAsset = (string)obj;
 		}
 
-		private void SelectItem(object obj)
-		{
-			SelectedItem = (string)obj;
-		}
+		
 
 		private ObservableCollection<ObservableCollection<LevelTilesTile>> _rows = null;
 		private string _selectedAsset;
-		private string _selectedItem;
+		
 		private LevelTilesTile _selectedTile;
 		private bool _isWalkableOption;
-
-		private string _healthOption;
-		private string _attackOption;
-		private string _defenseOption;
-		private string _scoreOption;
-		private string _lightScaleOption;
-
-		public string HealthOption
-		{
-			get => _healthOption;
-			set
-			{
-				_healthOption = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string AttackOption
-		{
-			get => _attackOption;
-			set
-			{
-				_attackOption = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string DefenseOption
-		{
-			get => _defenseOption;
-			set
-			{
-				_defenseOption = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string ScoreOption
-		{
-			get => _scoreOption;
-			set
-			{
-				_scoreOption = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public string LightScaleOption
-		{
-			get => _lightScaleOption;
-			set
-			{
-				_lightScaleOption = value;
-				RaisePropertyChanged();
-			}
-		}
-
-
 
 		private RelayCommand _selectAssetCommand = null;
 		private RelayCommand _applyAssetCommand = null;
@@ -389,8 +341,11 @@ namespace ToolKit
 		private RelayCommand _generateLevelCommand;
 		private Level _level;
 		private ObservableCollection<string> _soundListOption;
-		private string _selectedSoundOption;
+		
 		private RelayCommand _readXmlCommand;
+		private ObservableCollection<string> _monsterClassOption;
+
+		private RelayCommand _selectMonsterCommand;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{

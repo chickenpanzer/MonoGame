@@ -98,8 +98,7 @@ namespace MonoGame.Core
 				else //Shrink phase
 				{
 					_transitionStart = false;
-					if (_loadLevel != null)
-						_loadLevel();
+					_loadLevel?.Invoke();
 				}
 
 			}

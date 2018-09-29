@@ -8,21 +8,25 @@ using System.Windows.Media.Imaging;
 
 namespace ToolKit
 {
-	public class ItemRessource
+	/// <summary>
+	/// Parameterized and loaded via XAML
+	/// </summary>
+	public class GenericRessource
 	{
 		public Dictionary<string, BitmapImage> BitmapDictionary { get; set; }
 
-		public ItemRessource()
+		public GenericRessource(string directory)
 		{
 
 			BitmapDictionary = new Dictionary<string, BitmapImage>();
 
-			var filePaths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Items"));
+			var filePaths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", directory));
 
 			foreach (var filePath in filePaths)
 			{
 				BitmapDictionary.Add(Path.GetFileNameWithoutExtension(filePath), new BitmapImage(new Uri(filePath)));
 			}
 		}
+
 	}
 }

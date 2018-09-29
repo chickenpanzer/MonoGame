@@ -4,16 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToolKit"
-        mc:Ignorable="d"
+		xmlns:system="clr-namespace:System;assembly=mscorlib"
+		mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="1000">
 
 	<Window.Resources>
 		<local:AssetToBitmapConverter x:Key="cnv"/>
 		<local:BorderColorConverter x:Key="borderConverter"/>
-		<local:TileRessource x:Key="bitmap"/>
-		<local:ItemRessource x:Key="items"/>
-	</Window.Resources>
+		<ObjectDataProvider x:Key="bitmap" ObjectType="{x:Type local:GenericRessource}">
+			<ObjectDataProvider.ConstructorParameters>
+				<system:String>Floor</system:String>
+			</ObjectDataProvider.ConstructorParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="items" ObjectType="{x:Type local:GenericRessource}">
+			<ObjectDataProvider.ConstructorParameters>
+				<system:String>Items</system:String>
+			</ObjectDataProvider.ConstructorParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="monsters" ObjectType="{x:Type local:GenericRessource}">
+			<ObjectDataProvider.ConstructorParameters>
+				<system:String>Monsters</system:String>
+			</ObjectDataProvider.ConstructorParameters>
+		</ObjectDataProvider>
 
+	</Window.Resources>
 
 	<Grid x:Name="GlobalGrid" Background="Aqua">
 		<Grid.RowDefinitions>
@@ -30,8 +44,8 @@
 		<StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<Expander Header="File" IsExpanded="True">
 				<StackPanel Orientation="Horizontal">
-					<Button x:Name="ReadXml" Content="Open" Command="{Binding ReadXmlCommand}" Height="30" Width="50"/>
-					<Button x:Name="WriteXml" Content="Save" Command="{Binding WriteXmlCommand}" Height="30" Width="50"/>
+					<Button x:Name="ReadXml" Content="Open" Command="{Binding ReadXmlCommand}" Height="30" Width="50" Style="{StaticResource AnimatedButton}"/>
+					<Button x:Name="WriteXml" Content="Save" Command="{Binding WriteXmlCommand}" Height="30" Width="50" Style="{StaticResource AnimatedButton}"/>
 				</StackPanel>
 			</Expander>
 			<Expander Header="Floors" IsExpanded="False">
@@ -79,6 +93,29 @@
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>
 					<Button Content="Reset item" Command="{Binding SelectItemCommand}" Height="30" Width="Auto"/>
+				</StackPanel>
+			</Expander>
+			<Expander Header="Monsters" IsExpanded="False">
+				<StackPanel x:Name="MonsterssToolbar" Orientation="Horizontal"  Background="CadetBlue">
+					<ItemsControl x:Name="MonsterssPresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=monsters}, Path=BitmapDictionary}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
+									<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+																AncestorType={x:Type Window}}, Path=DataContext.SelectMonsterCommand}" CommandParameter="{Binding DataContext.Key, RelativeSource={RelativeSource Self}}">
+										<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
+									</Button>
+								</StackPanel>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+					<Button Content="Reset monster" Command="{Binding SelectMonsterCommand}" Height="30" Width="Auto"/>
 				</StackPanel>
 			</Expander>
 		</StackPanel>
@@ -150,26 +187,52 @@
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="Health Value" Grid.Row="0" Grid.Column="0"/>
-						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding HealthOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding ItemsViewModel.HealthOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 						<TextBlock Text="Score Value"  Grid.Row="1" Grid.Column="0"/>
-						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding ScoreOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding ItemsViewModel.ScoreOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 						<TextBlock Text="Attack Value"  Grid.Row="2" Grid.Column="0"/>
-						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Text="{Binding AttackOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Text="{Binding ItemsViewModel.AttackOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 						<TextBlock Text="Defense Value"  Grid.Row="3" Grid.Column="0"/>
-						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding DefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding ItemsViewModel.DefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 						<TextBlock Text="Light Scale"  Grid.Row="4" Grid.Column="0"/>
-						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="4" Grid.Column="1" Text="{Binding LightScaleOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="4" Grid.Column="1" Text="{Binding ItemsViewModel.LightScaleOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 						<TextBlock Text="Pickup Sound"  Grid.Row="5" Grid.Column="0"/>
-						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding SoundListOption}" SelectedValue="{Binding SelectedSoundOption}"/>
+						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding SoundListOption}" SelectedValue="{Binding ItemsViewModel.SelectedSoundOption}"/>
 					</Grid>
 				</Expander>
 				<Expander Header="Monster Options" IsExpanded="False">
-					
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="Health Value" Grid.Row="0" Grid.Column="0"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterHealthOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
+
+						<TextBlock Text="Score Value"  Grid.Row="1" Grid.Column="0"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterScoreOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
+
+						<TextBlock Text="Attack Value"  Grid.Row="2" Grid.Column="0"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterAttackOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
+
+						<TextBlock Text="Defense Value"  Grid.Row="3" Grid.Column="0"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterDefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
+
+						<TextBlock Text="Monster Class"  Grid.Row="5" Grid.Column="0"/>
+						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding MonsterClassOption}" SelectedValue="{Binding MonsterViewModel.SelectedMonsterClassOption}"/>
+					</Grid>
 				</Expander>
 				<Expander Header="New Level" IsExpanded="False">
 					<Grid>
