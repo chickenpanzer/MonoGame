@@ -33,6 +33,13 @@ namespace ToolKit
 			{
 				_bitmapDictionary.Add(Path.GetFileNameWithoutExtension(filePath), new BitmapImage(new Uri(filePath)));
 			}
+
+			filePaths = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Monsters"));
+
+			foreach (var filePath in filePaths)
+			{
+				_bitmapDictionary.Add(Path.GetFileNameWithoutExtension(filePath), new BitmapImage(new Uri(filePath)));
+			}
 		}
 
 

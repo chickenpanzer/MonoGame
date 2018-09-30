@@ -29,7 +29,7 @@
 
 	</Window.Resources>
 
-	<Grid x:Name="GlobalGrid" Background="Aqua">
+	<Grid x:Name="GlobalGrid" >
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="8*" />
@@ -118,6 +118,11 @@
 					<Button Content="Reset monster" Command="{Binding SelectMonsterCommand}" Height="30" Width="Auto"/>
 				</StackPanel>
 			</Expander>
+			<StackPanel x:Name="Mode" Orientation="Horizontal">
+				<RadioButton GroupName="EditMode" Content="Floor Mode" Margin="5" IsChecked="{Binding Path=ModeArray[0], Mode=TwoWay}" />
+				<RadioButton GroupName="EditMode" Content="Item Mode" Margin="5" IsChecked="{Binding Path=ModeArray[1], Mode=TwoWay}" />
+				<RadioButton GroupName="EditMode" Content="Monster Mode" Margin="5" IsChecked="{Binding Path=ModeArray[2], Mode=TwoWay}"/>
+			</StackPanel>
 		</StackPanel>
 		<!-- Design panel -->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row= "1" Grid.Column="0">
@@ -163,7 +168,6 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
-
 		<!-- TileInfo-->
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Row="1" Grid.Column="1" Background="Bisque">
 			<StackPanel>
@@ -213,6 +217,8 @@
 							<RowDefinition />
 							<RowDefinition />
 							<RowDefinition/>
+							<RowDefinition/>
+							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition/>
@@ -230,8 +236,15 @@
 						<TextBlock Text="Defense Value"  Grid.Row="3" Grid.Column="0"/>
 						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterDefenseOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
-						<TextBlock Text="Monster Class"  Grid.Row="5" Grid.Column="0"/>
-						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding MonsterClassOption}" SelectedValue="{Binding MonsterViewModel.SelectedMonsterClassOption}"/>
+						<TextBlock Text="Monster Class"  Grid.Row="4" Grid.Column="0"/>
+						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="4" Grid.Column="1" ItemsSource="{Binding MonsterClassOption}" SelectedValue="{Binding MonsterViewModel.SelectedMonsterClassOption}"/>
+
+						<TextBlock Text="Mover Class"  Grid.Row="5" Grid.Column="0"/>
+						<ComboBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding MonsterMoverClassOption}" SelectedValue="{Binding MonsterViewModel.SelectedMonsterMoverClassOption}"/>
+
+						<TextBlock Text="Move Interval"  Grid.Row="6" Grid.Column="0"/>
+						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="6" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterMoveIntervalOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
+
 					</Grid>
 				</Expander>
 				<Expander Header="New Level" IsExpanded="False">
@@ -260,19 +273,26 @@
 				</Expander>
 			</StackPanel>
 		</ScrollViewer>
-
 		<!-- Status Bar -->
 		<StatusBar x:Name="Status" Grid.Row="2" Grid.ColumnSpan="2" Background="Beige" >
 			<StatusBarItem>
 				<StackPanel Orientation="Horizontal">
-					<TextBlock Text="Level Name :"/>
-					<TextBox x:Name="FileName" Text="{Binding Level.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0"/>
-					<TextBlock Text="Tiles :" Margin="5,0,0,0"/>
-					<TextBlock x:Name="NumberOfTiles" Text="{Binding Level.Tiles.Length,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0"/>
-					<TextBlock Text="Selected Asset :" Margin="5,0,0,0"/>
-					<TextBlock x:Name="SelectedAsset" Text="{Binding SelectedAsset,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0"/>
-					<TextBlock Text="Selected Item :" Margin="5,0,0,0"/>
-					<TextBlock x:Name="SelectedItem" Text="{Binding SelectedItem,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0"/>
+					<TextBlock Text="Level Name :" VerticalAlignment="Center"/>
+					<TextBox x:Name="FileName" Text="{Binding Level.name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock Text="Tiles :" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="NumberOfTiles" Text="{Binding Level.Tiles.Length,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+
+					<TextBlock Text="Selected Asset :" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<Image  Source="{Binding SelectedAssetImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedAsset" Text="{Binding SelectedAsset,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+
+					<TextBlock Text="Selected Item :" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<Image  Source="{Binding ItemsViewModel.SelectedItemImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedItem" Text="{Binding ItemsViewModel.SelectedItem,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+
+					<TextBlock Text="Selected Monster :" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<Image  Source="{Binding MonsterViewModel.SelectedMonsterImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedMonster" Text="{Binding MonsterViewModel.SelectedMonster,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
 				</StackPanel>
 			</StatusBarItem>
 		</StatusBar>

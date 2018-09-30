@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Win32;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core;
 using Penumbra;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 
 namespace MogulQuest
@@ -115,7 +117,27 @@ namespace MogulQuest
 
 			//Level
 			level = new Level(this, this.Penumbra);
-			level.LoadLevel("Enter.xml");
+
+
+			string selectedLevelFile = null;
+
+			//********************************
+			// Level selection in debug Mode *
+			//********************************
+#if DEBUG
+
+			var win = new OpenFileDialog();
+			win.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			win.Filter = "Fichiers level (*.xml)|*.xml";
+
+			win.ShowDialog();
+
+			var fullPath = win.FileName;
+			selectedLevelFile = Path.GetFileName(fullPath);
+#endif
+			string filename = (string.IsNullOrEmpty(selectedLevelFile) ? "Enter.xml" : selectedLevelFile);
+
+			level.LoadLevel(filename);
 			level.Begin(player);
 
 		}
@@ -157,7 +179,7 @@ namespace MogulQuest
 					level.Update(gameTime, sprites);
 				}
 
-				//Check level victory conditions
+				//Check level victory conditions if any
 				level.CheckVictoryConditions();
 
 				//Load Next Level

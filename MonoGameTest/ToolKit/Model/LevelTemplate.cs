@@ -478,7 +478,7 @@ namespace ToolKit {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     public partial class LevelTilesTileActor : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private LevelTilesTileActorMover[] moverField;
+        private LevelTilesTileActorMover moverField;
         
         private string classField;
         
@@ -498,7 +498,7 @@ namespace ToolKit {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Mover", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public LevelTilesTileActorMover[] Mover {
+        public LevelTilesTileActorMover Mover {
             get {
                 return this.moverField;
             }

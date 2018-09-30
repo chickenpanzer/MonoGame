@@ -22,7 +22,7 @@ namespace ToolKit
 			// TODO: make sound loading dynamic
 			_soundListOption = new ObservableCollection<string>() { "NONE", "pickup", "apple_bite" };
 			_monsterClassOption = new ObservableCollection<string>() { "Monster", "Amobea" };
-
+			_monsterMoverClassOption = new ObservableCollection<string>() { "RandomMover" };
 
 			//Items and Monster datacontext
 			ItemsViewModel = new ItemsViewModel();
@@ -33,7 +33,37 @@ namespace ToolKit
 
 		public MonsterViewModel MonsterViewModel { get; set; }
 
-		
+		private bool[] _modeArray = new bool[] { true, false, false };
+		public bool[] ModeArray
+		{
+			get { return _modeArray; }
+		}
+
+		enum EditModes
+		{
+			FloorMode = 0,
+			ItemMode,
+			MonsterMode
+		}
+
+		private EditModes EditMode()
+		{
+			if (ModeArray[0])
+				return EditModes.FloorMode;
+
+			if (ModeArray[1])
+				return EditModes.ItemMode;
+
+			if (ModeArray[2])
+				return EditModes.MonsterMode;
+
+			return EditModes.FloorMode;
+		}
+
+		public int SelectedMode
+		{
+			get { return Array.IndexOf(_modeArray, true); }
+		}
 
 		public Level Level
 		{
@@ -65,6 +95,16 @@ namespace ToolKit
 			}
 		}
 
+		public ObservableCollection<string> MonsterMoverClassOption
+		{
+			get => _monsterMoverClassOption;
+			set
+			{
+				_monsterMoverClassOption = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public ObservableCollection<ObservableCollection<LevelTilesTile>> Rows
 		{
 			get => _rows;
@@ -82,10 +122,19 @@ namespace ToolKit
 			{
 				_selectedAsset = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged("SelectedAssetImage");
 			}
 		}
 
-		
+		public BitmapImage SelectedAssetImage
+		{
+			get
+			{
+				BitmapImage img = null;
+				GenericRessource.GraphicRessources["Floor"].TryGetValue(SelectedAsset, out img);
+				return img;
+			}
+		}
 
 		private int _rowsOption;
 
@@ -173,38 +222,6 @@ namespace ToolKit
 			Rows = ExplodeLevel(Level);
 		}
 
-
-		/// <summary>
-		/// Retrieve data from current tile for duplication
-		/// </summary>
-		/// <param name="obj"></param>
-		private void GetTileInfo(object obj)
-		{
-			var tile = obj as LevelTilesTile;
-
-			bool.TryParse(tile.isWalkable, out bool walkable);
-			string asset = tile.Layer[0].assetName;
-
-			//Set selected asset and data
-			SelectedAsset = asset;
-			IsWalkableOption = walkable;
-
-			//Set item asset and data
-
-			if (tile.Actor != null)
-			{
-				var actor = tile.Actor[0];
-
-				ItemsViewModel.HealthOption = actor.healthValue;
-				ItemsViewModel.ScoreOption = actor.scoreValue;
-				ItemsViewModel.AttackOption = actor.attackValue;
-				ItemsViewModel.DefenseOption = actor.defenseValue;
-				ItemsViewModel.SelectedItem = actor.assetName;
-				ItemsViewModel.LightScaleOption = actor.lightScale;
-				ItemsViewModel.SelectedSoundOption = actor.pickupSound;
-			}
-		}
-
 		public LevelTilesTile SelectedTile
 		{
 			get => _selectedTile;
@@ -267,6 +284,50 @@ namespace ToolKit
 			return Level != null;
 		}
 
+
+		/// <summary>
+		/// Retrieve data from current tile for duplication according to current selected mode
+		/// </summary>
+		/// <param name="obj"></param>
+		private void GetTileInfo(object obj)
+		{
+			var tile = obj as LevelTilesTile;
+
+
+			if (EditMode() == EditModes.FloorMode)
+			{
+				bool.TryParse(tile.isWalkable, out bool walkable);
+				string asset = tile.Layer[0].assetName;
+
+				//Set selected asset and data
+				SelectedAsset = asset;
+				IsWalkableOption = walkable;
+			}
+
+			if (tile.Actor != null)
+			{
+				var actor = tile.Actor[0];
+
+				if (actor.@class == "Pickup")
+				{
+					ItemsViewModel.HealthOption = actor.healthValue;
+					ItemsViewModel.ScoreOption = actor.scoreValue;
+					ItemsViewModel.AttackOption = actor.attackValue;
+					ItemsViewModel.DefenseOption = actor.defenseValue;
+					ItemsViewModel.SelectedItem = actor.assetName;
+					ItemsViewModel.LightScaleOption = actor.lightScale;
+					ItemsViewModel.SelectedSoundOption = actor.pickupSound;
+				}
+				else
+				{
+					MonsterViewModel.MonsterHealthOption = actor.healthValue;
+					MonsterViewModel.MonsterScoreOption = actor.scoreValue;
+					MonsterViewModel.MonsterAttackOption = actor.attackValue;
+					MonsterViewModel.MonsterDefenseOption = actor.defenseValue;
+					MonsterViewModel.SelectedMonster = actor.assetName;
+				}
+			}
+		}
 		/// <summary>
 		/// On click, apply assets to corresponding tile
 		/// </summary>
@@ -276,56 +337,83 @@ namespace ToolKit
 			var tile = obj as LevelTilesTile;
 			var layer = tile.Layer[0];
 
-			if (!string.IsNullOrEmpty(SelectedAsset))
-				layer.assetName = SelectedAsset;
-
-
-			LevelTilesTileActor actor = null;
-
-			//Actor
-			actor = tile.Actor[0];
-			if (!string.IsNullOrEmpty(ItemsViewModel.SelectedItem))
+			//Floor mode
+			if (EditMode() == EditModes.FloorMode)
 			{
-				actor.assetName = ItemsViewModel.SelectedItem;
-				actor.@class = "Pickup";
-				actor.attackValue = ItemsViewModel.AttackOption;
-				actor.defenseValue = ItemsViewModel.DefenseOption;
-				actor.scoreValue = ItemsViewModel.ScoreOption;
-				actor.healthValue = ItemsViewModel.HealthOption;
-				actor.lightScale = ItemsViewModel.LightScaleOption;
-				actor.pickupSound = ItemsViewModel.SelectedSoundOption;
-			}
-			else if (!string.IsNullOrEmpty(MonsterViewModel.SelectedMonster))
-			{
-				actor.assetName = MonsterViewModel.SelectedMonster;
-				actor.@class = MonsterViewModel.SelectedMonsterClassOption;
-				actor.attackValue = MonsterViewModel.MonsterAttackOption;
-				actor.defenseValue = MonsterViewModel.MonsterDefenseOption;
-				actor.scoreValue = MonsterViewModel.MonsterScoreOption;
-				actor.healthValue = MonsterViewModel.MonsterHealthOption;
-			}
-			else
-			{
-				actor.@class = null;
-				actor.attackValue = null;
-				actor.defenseValue = null;
-				actor.scoreValue = null;
-				actor.healthValue = null;
-				actor.lightScale = null;
-				actor.pickupSound = null;
-				actor.assetName = null;
+				if (!string.IsNullOrEmpty(SelectedAsset))
+					layer.assetName = SelectedAsset;
+
+				tile.isWalkable = IsWalkableOption.ToString();
 			}
 
+			LevelTilesTileActor actor = tile.Actor[0];
 
-			tile.isWalkable = IsWalkableOption.ToString();
+			//Items Mode
+			if (EditMode() == EditModes.ItemMode)
+			{
+				if (!string.IsNullOrEmpty(ItemsViewModel.SelectedItem))
+				{
+					actor.assetName = ItemsViewModel.SelectedItem;
+					actor.@class = "Pickup";
+					actor.attackValue = ItemsViewModel.AttackOption;
+					actor.defenseValue = ItemsViewModel.DefenseOption;
+					actor.scoreValue = ItemsViewModel.ScoreOption;
+					actor.healthValue = ItemsViewModel.HealthOption;
+					actor.lightScale = ItemsViewModel.LightScaleOption;
+					actor.pickupSound = ItemsViewModel.SelectedSoundOption;
+				}
+				else
+				{
+					ResetActor(actor);
+				}
+			}
+
+			//Monster Mode
+			if (EditMode() == EditModes.MonsterMode)
+			{
+				if (!string.IsNullOrEmpty(MonsterViewModel.SelectedMonster))
+				{
+					actor.assetName = MonsterViewModel.SelectedMonster;
+					actor.@class = MonsterViewModel.SelectedMonsterClassOption;
+					actor.attackValue = MonsterViewModel.MonsterAttackOption;
+					actor.defenseValue = MonsterViewModel.MonsterDefenseOption;
+					actor.scoreValue = MonsterViewModel.MonsterScoreOption;
+					actor.healthValue = MonsterViewModel.MonsterHealthOption;
+					if (!string.IsNullOrEmpty(MonsterViewModel.SelectedMonsterMoverClassOption))
+					{
+						var mover = new LevelTilesTileActorMover() { @class = MonsterViewModel.SelectedMonsterMoverClassOption };
+						mover.moveSpeed = "32";
+						mover.interval = MonsterViewModel.MonsterMoveIntervalOption;
+						actor.Mover = mover;
+					}
+
+				}
+				else
+				{
+					ResetActor(actor);
+				}
+
+			}
+
+		}
+
+		private static void ResetActor(LevelTilesTileActor actor)
+		{
+			actor.@class = null;
+			actor.attackValue = null;
+			actor.defenseValue = null;
+			actor.scoreValue = null;
+			actor.healthValue = null;
+			actor.lightScale = null;
+			actor.pickupSound = null;
+			actor.assetName = null;
+			actor.Mover = null;
 		}
 
 		private void SelectAsset(object obj)
 		{
 			SelectedAsset = (string)obj;
 		}
-
-		
 
 		private ObservableCollection<ObservableCollection<LevelTilesTile>> _rows = null;
 		private string _selectedAsset;
@@ -339,13 +427,13 @@ namespace ToolKit
 		private RelayCommand _getTileInfoCommand = null;
 		private RelayCommand _selectItemCommand;
 		private RelayCommand _generateLevelCommand;
+		private RelayCommand _readXmlCommand;
+		private RelayCommand _selectMonsterCommand;
+
 		private Level _level;
 		private ObservableCollection<string> _soundListOption;
-		
-		private RelayCommand _readXmlCommand;
 		private ObservableCollection<string> _monsterClassOption;
-
-		private RelayCommand _selectMonsterCommand;
+		private ObservableCollection<string> _monsterMoverClassOption;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{

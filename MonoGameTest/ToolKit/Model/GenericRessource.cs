@@ -13,6 +13,8 @@ namespace ToolKit
 	/// </summary>
 	public class GenericRessource
 	{
+		public static Dictionary<string, Dictionary<string, BitmapImage>> GraphicRessources = new Dictionary<string, Dictionary<string, BitmapImage>>();
+
 		public Dictionary<string, BitmapImage> BitmapDictionary { get; set; }
 
 		public GenericRessource(string directory)
@@ -26,6 +28,8 @@ namespace ToolKit
 			{
 				BitmapDictionary.Add(Path.GetFileNameWithoutExtension(filePath), new BitmapImage(new Uri(filePath)));
 			}
+
+			GraphicRessources.Add(directory, BitmapDictionary);
 		}
 
 	}

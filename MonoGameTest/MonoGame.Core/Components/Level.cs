@@ -170,7 +170,6 @@ namespace MonoGame.Core
 			//Get floor layer
 			_layers.TryGetValue(0f, out SpriteBase[,] floor);
 
-
 			// TODO: add castShadow property to floor layer to enable non walkable areas not to cast shadow
 			for (int i = 0; i < _rows; i++)
 			{

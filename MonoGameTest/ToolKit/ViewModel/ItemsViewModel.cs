@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace ToolKit
 {
@@ -73,6 +74,17 @@ namespace ToolKit
 			{
 				_selectedItem = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged("SelectedItemImage");
+			}
+		}
+
+		public BitmapImage SelectedItemImage
+		{
+			get
+			{
+				BitmapImage img = null;
+				GenericRessource.GraphicRessources["Items"].TryGetValue(SelectedItem, out img);
+				return img;
 			}
 		}
 
