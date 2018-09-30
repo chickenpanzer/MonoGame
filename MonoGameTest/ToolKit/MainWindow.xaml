@@ -11,6 +11,7 @@
 	<Window.Resources>
 		<local:AssetToBitmapConverter x:Key="cnv"/>
 		<local:BorderColorConverter x:Key="borderConverter"/>
+		<local:StartPointVisibilityConverter x:Key="spvc"/>
 		<ObjectDataProvider x:Key="bitmap" ObjectType="{x:Type local:GenericRessource}">
 			<ObjectDataProvider.ConstructorParameters>
 				<system:String>Floor</system:String>
@@ -46,6 +47,14 @@
 				<StackPanel Orientation="Horizontal">
 					<Button x:Name="ReadXml" Content="Open" Command="{Binding ReadXmlCommand}" Height="30" Width="50" Style="{StaticResource AnimatedButton}"/>
 					<Button x:Name="WriteXml" Content="Save" Command="{Binding WriteXmlCommand}" Height="30" Width="50" Style="{StaticResource AnimatedButton}"/>
+				</StackPanel>
+			</Expander>
+			<Expander Header="Level" IsExpanded="True">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Next Level :" />
+					<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Text="{Binding Level.nextLevel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}"/>
+					<TextBlock Text="Start Position (x,y) :" />
+					<TextBox Width="80" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Text="{Binding Level.startPosition, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}"/>
 				</StackPanel>
 			</Expander>
 			<Expander Header="Floors" IsExpanded="False">
@@ -144,6 +153,26 @@
 										</Border>
 										<!-- Foreground -->
 										<Image Height="32" Width="32" Source="{Binding Path=Actor[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+										<Canvas Width="32" Height="32" Background="Red" Opacity=".25" >
+											<Canvas.Visibility>
+												<MultiBinding Converter="{StaticResource spvc}" UpdateSourceTrigger="PropertyChanged">
+													<Binding Path="posX" />
+													<Binding Path="posY" />
+													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
+												</MultiBinding>
+											</Canvas.Visibility>
+										</Canvas>
+										<TextBlock Width="32" Height="32" Text="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">
+											<TextBlock.Visibility>
+												<MultiBinding Converter="{StaticResource spvc}" UpdateSourceTrigger="PropertyChanged">
+													<Binding Path="posX" />
+													<Binding Path="posY" />
+													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
+												</MultiBinding>
+											</TextBlock.Visibility>
+										</TextBlock>
+
 										<!-- Transparent Canvas on top : interception des actions souris -->
 										<Canvas Width="32" Height="32" Background="Transparent" >
 											<!-- Debug 

@@ -37,6 +37,8 @@ namespace ToolKit {
         private string columnsField;
         
         private string nextLevelField;
+
+		private string startPositionField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -123,8 +125,24 @@ namespace ToolKit {
                 this.RaisePropertyChanged("nextLevel");
             }
         }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlAttributeAttribute()]
+		public string startPosition
+		{
+			get
+			{
+				return this.startPositionField;
+			}
+			set
+			{
+				this.startPositionField = value;
+				this.RaisePropertyChanged("startPosition");
+				this.RaisePropertyChanged("Level");
+			}
+		}
+
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;

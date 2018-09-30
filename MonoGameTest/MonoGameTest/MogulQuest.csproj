@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\apple.png" />
+    <Content Include="Asym.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\apple_bite.wav" />
     <Content Include="Content\bgMoonlight.mp3" />
     <Content Include="Content\bgMusic.mp3" />

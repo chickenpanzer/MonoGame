@@ -390,28 +390,32 @@ namespace MonoGame.Core
 			var layers = tile.Descendants("Layer");
 			foreach (var layer in layers)
 			{
-				assetName = layer.Attribute("assetName").Value;
-				depth = float.Parse(layer.Attribute("depth").Value);
+				assetName = layer.Attribute("assetName")?.Value;
 
-				//Get texture
-				_textures.TryGetValue(assetName, out Texture2D texture);
-
-				//Adding layer
-				if (!_layers.ContainsKey(depth))
+				if (assetName != null)
 				{
-					_layers.Add(depth, new SpriteBase[_rows, _columns]);
-				}
+					depth = float.Parse(layer.Attribute("depth").Value);
 
-				_layers.TryGetValue(depth, out SpriteBase[,] grid);
+					//Get texture
+					_textures.TryGetValue(assetName, out Texture2D texture);
 
-				//Ground Zero !
-				if (depth == 0f)
-				{
-					grid[posY, posX] = new Floor(texture, new Vector2(posX * pix, posY * pix), null, depth, isWalkable);
-				}
-				else
-				{
-					grid[posY, posX] = new SpriteBase(texture, new Vector2(posX * pix, posY * pix), null, 0f, Color.White, depth);
+					//Adding layer
+					if (!_layers.ContainsKey(depth))
+					{
+						_layers.Add(depth, new SpriteBase[_rows, _columns]);
+					}
+
+					_layers.TryGetValue(depth, out SpriteBase[,] grid);
+
+					//Ground Zero !
+					if (depth == 0f)
+					{
+						grid[posY, posX] = new Floor(texture, new Vector2(posX * pix, posY * pix), null, depth, isWalkable);
+					}
+					else
+					{
+						grid[posY, posX] = new SpriteBase(texture, new Vector2(posX * pix, posY * pix), null, 0f, Color.White, depth);
+					}
 				}
 			}
 		}

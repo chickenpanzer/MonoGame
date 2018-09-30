@@ -60,6 +60,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\AssetToBitmapConverter.cs" />
     <Compile Include="Converters\BorderColorConverter.cs" />
+    <Compile Include="Converters\StartPointVisibilityConverter.cs" />
     <Compile Include="Model\GenericRessource.cs" />
     <Compile Include="Model\LevelGenerator.cs" />
     <Compile Include="Model\LevelTemplate.cs" />
