@@ -278,22 +278,37 @@
 					</Grid>
 				</Expander>
 				<Expander Header="Victory Conditions Options" IsExpanded="False">
-					<StackPanel>
+					<StackPanel Orientation="Vertical">
+						<Button x:Name="AddVictoryCondition"  Content="Add Victory Condition"  
+								Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VictoryConditionViewModel.AddVictoryConditionCommand}" />
 						<ListView ItemsSource="{Binding VictoryConditionViewModel.VictoryConditions, FallbackValue=binding_error}">
 							<ListView.View>
 								<GridView>
-									<GridViewColumn Header="Class" Width="120">
+									<GridViewColumn Header="Action" Width="50">
 										<GridViewColumn.CellTemplate>
 											<DataTemplate>
-												<ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VictoryConditionClassOption}"
-														 SelectedItem="{Binding class}"/>
+												<Button Content=" - " HorizontalAlignment="Center" 
+														Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VictoryConditionViewModel.DeleteVictoryConditionCommand}" 
+														CommandParameter="{Binding}"
+														Width="Auto"/>
 											</DataTemplate>
 										</GridViewColumn.CellTemplate>
 									</GridViewColumn>
-									<GridViewColumn Header="AssetName" Width="200">
+									<GridViewColumn Header="Class" Width="180">
 										<GridViewColumn.CellTemplate>
 											<DataTemplate>
-												<TextBox Text="{Binding assetName}"/>
+												<ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VictoryConditionClassOption}"
+														 SelectedItem="{Binding class}"
+														  Width="170"/>
+											</DataTemplate>
+										</GridViewColumn.CellTemplate>
+									</GridViewColumn>
+									<GridViewColumn Header="AssetName" Width="250">
+										<GridViewColumn.CellTemplate>
+											<DataTemplate>
+												<StackPanel Orientation="Horizontal">
+													<TextBox Text="{Binding assetName}" Width="200" AllowDrop="True" DragOver="TextBox_DragOver" Drop="TextBox_Drop"	/>
+												</StackPanel>
 											</DataTemplate>
 										</GridViewColumn.CellTemplate>
 									</GridViewColumn>
@@ -339,15 +354,22 @@
 
 					<TextBlock Text="Selected Asset :" Margin="5,0,0,0" VerticalAlignment="Center"/>
 					<Image  Source="{Binding SelectedAssetImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-					<TextBlock x:Name="SelectedAsset" Text="{Binding SelectedAsset,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedAsset" 
+							   Text="{Binding SelectedAsset,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+							   Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"
+							   MouseMove="SelectedAsset_MouseMove"
+							   Background="Aqua"/>
 
 					<TextBlock Text="Selected Item :" Margin="5,0,0,0" VerticalAlignment="Center"/>
 					<Image  Source="{Binding ItemsViewModel.SelectedItemImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-					<TextBlock x:Name="SelectedItem" Text="{Binding ItemsViewModel.SelectedItem,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedItem" Text="{Binding ItemsViewModel.SelectedItem,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" 
+							   Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"
+							   MouseMove="SelectedItem_MouseMove"
+							   Background="Aqua"/>
 
 					<TextBlock Text="Selected Monster :" Margin="5,0,0,0" VerticalAlignment="Center"/>
 					<Image  Source="{Binding MonsterViewModel.SelectedMonsterImage}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-					<TextBlock x:Name="SelectedMonster" Text="{Binding MonsterViewModel.SelectedMonster,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=binding_error}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
+					<TextBlock x:Name="SelectedMonster" Text="{Binding MonsterViewModel.SelectedMonster,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Height="16" Width="200" Margin="5,0,0,0" VerticalAlignment="Center"/>
 				</StackPanel>
 			</StatusBarItem>
 		</StatusBar>

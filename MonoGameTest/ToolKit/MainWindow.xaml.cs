@@ -27,5 +27,66 @@ namespace ToolKit
 			InitializeComponent();
 			this.DataContext = new ToolKitDataContext(); 
 		}
+
+		private void SelectedAsset_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				var source = sender as TextBlock;
+
+				DragDropEffects effects;
+
+				DataObject obj = new DataObject();
+
+				obj.SetData(typeof(string), source.Text);
+
+				effects = DragDrop.DoDragDrop(SelectedAsset, obj, DragDropEffects.Copy | DragDropEffects.Move);
+
+			}
+		}
+
+		private void TextBox_DragOver(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(typeof(string)))
+			{
+				e.Effects = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effects = DragDropEffects.None;
+			}
+		}
+
+		private void TextBox_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(typeof(string)))
+			{
+				e.Effects = DragDropEffects.Copy;
+				string uri = (string)e.Data.GetData(typeof(string));
+				// Utiliser uri comme vous le souhaitez
+
+			}
+			else
+			{
+				e.Effects = DragDropEffects.None;
+			}
+		}
+
+		private void SelectedItem_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				var source = sender as TextBlock;
+
+				DragDropEffects effects;
+
+				DataObject obj = new DataObject();
+
+				obj.SetData(typeof(string), source.Text);
+
+				effects = DragDrop.DoDragDrop(SelectedItem, obj, DragDropEffects.Copy | DragDropEffects.Move);
+
+			}
+		}
 	}
 }

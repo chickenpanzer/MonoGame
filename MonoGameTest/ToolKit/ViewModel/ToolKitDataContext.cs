@@ -272,7 +272,10 @@ namespace ToolKit
 		private void WriteXml(object obj)
 		{
 			var writer = new LevelWriter();
-			var lvl = writer.AddRessourcesToLevel(Level);
+
+
+			//Prepare level for writing
+			var lvl = writer.PrepareLevelForWriting(Level, VictoryConditionViewModel.VictoryConditions.ToList());
 
 			//Prompt for file location
 			var win = new SaveFileDialog();
@@ -475,6 +478,11 @@ namespace ToolKit
 
 		}
 
+		/// <summary>
+		/// Convert level tiles (list of tiles, unsorted) into ordered ObservableCollections.
+		/// </summary>
+		/// <param name="level"></param>
+		/// <returns></returns>
 		private ObservableCollection<ObservableCollection<LevelTilesTile>> ExplodeLevel(Level level)
 		{
 			var rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();

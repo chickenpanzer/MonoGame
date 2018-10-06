@@ -9,7 +9,39 @@ namespace ToolKit
 	internal class LevelWriter
 	{
 
-		public Level AddRessourcesToLevel(Level level)
+		public Level PrepareLevelForWriting(Level level, List<LevelVictoryConditionsVictoryCondition> conditions)
+		{
+			var lvl = AddRessourcesToLevel(level);
+			lvl = AddVictoryConditionsToLevel(lvl, conditions);
+
+			return lvl;
+		}
+
+		/// <summary>
+		/// Victory conditions
+		/// </summary>
+		/// <param name="level"></param>
+		/// <param name="conditions"></param>
+		/// <returns></returns>
+		private Level AddVictoryConditionsToLevel(Level level, List<LevelVictoryConditionsVictoryCondition> conditions)
+		{
+			var lvl = level;
+
+			//clear VictoryConditions Data
+			lvl.VictoryConditions = null;
+
+			if (conditions != null)
+				lvl.VictoryConditions = conditions.ToArray();
+
+			return lvl;
+		}
+
+		/// <summary>
+		/// Add texture info and sound info
+		/// </summary>
+		/// <param name="level"></param>
+		/// <returns></returns>
+		private Level AddRessourcesToLevel(Level level)
 		{
 			//Reset texture ressources and sound ressources
 			level.Content.TextureRessource = null;
@@ -24,6 +56,11 @@ namespace ToolKit
 			return level;
 		}
 
+		/// <summary>
+		/// Actors
+		/// </summary>
+		/// <param name="level"></param>
+		/// <returns></returns>
 		private Level AddActorAssets(Level level)
 		{
 			Dictionary<string, string> assetList = new Dictionary<string, string>();
@@ -41,7 +78,7 @@ namespace ToolKit
 					if (!string.IsNullOrEmpty(actor.assetName) && !assetList.ContainsKey(actor.assetName))
 						assetList.Add(actor.assetName, actor.assetName);
 
-					if(!string.IsNullOrEmpty(actor.pickupSound) && !soundList.ContainsKey(actor.pickupSound))
+					if (!string.IsNullOrEmpty(actor.pickupSound) && !soundList.ContainsKey(actor.pickupSound))
 						soundList.Add(actor.pickupSound, actor.pickupSound);
 				}
 			}
@@ -65,6 +102,11 @@ namespace ToolKit
 			return level;
 		}
 
+		/// <summary>
+		/// Tile assets
+		/// </summary>
+		/// <param name="level"></param>
+		/// <returns></returns>
 		private Level AddTileAssets(Level level)
 		{
 			Dictionary<string, string> assetList = new Dictionary<string, string>();
