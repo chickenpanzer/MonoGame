@@ -68,6 +68,7 @@
     <Compile Include="ViewModel\ItemsViewModel.cs" />
     <Compile Include="ViewModel\MonsterViewModel.cs" />
     <Compile Include="ViewModel\ToolKitDataContext.cs" />
+    <Compile Include="ViewModel\VictoryConditionViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="XML\XMLHelper.cs" />
     <Page Include="MainWindow.xaml">
@@ -581,6 +582,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MonoGame.Core\MonoGame.Core.csproj">
+      <Project>{853069d5-8e7a-4642-9f62-4de770c2eaac}</Project>
+      <Name>MonoGame.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

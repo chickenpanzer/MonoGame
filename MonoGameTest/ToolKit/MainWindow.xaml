@@ -154,12 +154,13 @@
 										<!-- Foreground -->
 										<Image Height="32" Width="32" Source="{Binding Path=Actor[0].assetName, FallbackValue=binding_error, Converter={StaticResource cnv}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
 
+										<!-- Starting point mask -->
 										<Canvas Width="32" Height="32" Background="Red" Opacity=".25" >
 											<Canvas.Visibility>
 												<MultiBinding Converter="{StaticResource spvc}" UpdateSourceTrigger="PropertyChanged">
 													<Binding Path="posX" />
 													<Binding Path="posY" />
-													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
+													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level.startPosition" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
 												</MultiBinding>
 											</Canvas.Visibility>
 										</Canvas>
@@ -168,7 +169,7 @@
 												<MultiBinding Converter="{StaticResource spvc}" UpdateSourceTrigger="PropertyChanged">
 													<Binding Path="posX" />
 													<Binding Path="posY" />
-													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
+													<Binding UpdateSourceTrigger="PropertyChanged" Path="DataContext.Level.startPosition" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}" />
 												</MultiBinding>
 											</TextBlock.Visibility>
 										</TextBlock>
@@ -275,6 +276,31 @@
 						<TextBox Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Grid.Row="6" Grid.Column="1" Text="{Binding MonsterViewModel.MonsterMoveIntervalOption, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, FallbackValue=Binding_error}"/>
 
 					</Grid>
+				</Expander>
+				<Expander Header="Victory Conditions Options" IsExpanded="False">
+					<StackPanel>
+						<ListView ItemsSource="{Binding VictoryConditionViewModel.VictoryConditions, FallbackValue=binding_error}">
+							<ListView.View>
+								<GridView>
+									<GridViewColumn Header="Class" Width="120">
+										<GridViewColumn.CellTemplate>
+											<DataTemplate>
+												<ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VictoryConditionClassOption}"
+														 SelectedItem="{Binding class}"/>
+											</DataTemplate>
+										</GridViewColumn.CellTemplate>
+									</GridViewColumn>
+									<GridViewColumn Header="AssetName" Width="200">
+										<GridViewColumn.CellTemplate>
+											<DataTemplate>
+												<TextBox Text="{Binding assetName}"/>
+											</DataTemplate>
+										</GridViewColumn.CellTemplate>
+									</GridViewColumn>
+								</GridView>
+							</ListView.View>
+						</ListView>
+					</StackPanel>
 				</Expander>
 				<Expander Header="New Level" IsExpanded="False">
 					<Grid>

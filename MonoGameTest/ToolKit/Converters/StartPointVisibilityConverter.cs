@@ -11,13 +11,16 @@ namespace ToolKit
 {
 	public class StartPointVisibilityConverter : IMultiValueConverter
 	{
-		//Parameters must be actual PosX, PosY of tile, and Level
+		//Parameters must be actual PosX, PosY of tile, and Level start position
 		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 		{
 
+			if (values[2] == null)
+				return Visibility.Collapsed;
+
 			var posX = values[0];
 			var posY = values[1];
-			var startPosition = ((Level)values[2]).startPosition.Split(',');
+			var startPosition = ((string)values[2]).Split(',');
 
 			if (startPosition.Length == 2)
 			{

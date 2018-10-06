@@ -23,15 +23,30 @@ namespace ToolKit
 			_soundListOption = new ObservableCollection<string>() { "NONE", "pickup", "apple_bite" };
 			_monsterClassOption = new ObservableCollection<string>() { "Monster", "Amobea" };
 			_monsterMoverClassOption = new ObservableCollection<string>() { "RandomMover" };
+			_victoryConditionClassOption = new ObservableCollection<string>() {"ExitVictoryCondition","PickAllVictoryCondition", "PickOneVictoryCondition" };
 
 			//Items and Monster datacontext
 			ItemsViewModel = new ItemsViewModel();
 			MonsterViewModel = new MonsterViewModel();
+			VictoryConditionViewModel = new VictoryConditionViewModel();
 		}
 
 		public ItemsViewModel ItemsViewModel { get; set; }
 
 		public MonsterViewModel MonsterViewModel { get; set; }
+		public VictoryConditionViewModel VictoryConditionViewModel
+		{
+			get
+			{
+				return _victoryConditionViewModel;
+			}
+
+			private set
+			{
+				_victoryConditionViewModel = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		private bool[] _modeArray = new bool[] { true, false, false };
 		public bool[] ModeArray
@@ -104,6 +119,18 @@ namespace ToolKit
 				RaisePropertyChanged();
 			}
 		}
+
+		public ObservableCollection<string> VictoryConditionClassOption
+		{
+			get => _victoryConditionClassOption;
+			set
+			{
+				_victoryConditionClassOption = value;
+				RaisePropertyChanged();
+			}
+		}
+
+
 
 		public ObservableCollection<ObservableCollection<LevelTilesTile>> Rows
 		{
@@ -434,6 +461,8 @@ namespace ToolKit
 		private ObservableCollection<string> _soundListOption;
 		private ObservableCollection<string> _monsterClassOption;
 		private ObservableCollection<string> _monsterMoverClassOption;
+		private ObservableCollection<string> _victoryConditionClassOption;
+		private VictoryConditionViewModel _victoryConditionViewModel;
 
 		internal void LoadXMLTemplate(string XMLFileName)
 		{
@@ -441,6 +470,8 @@ namespace ToolKit
 
 			//Explode level in layers and rows
 			Rows = ExplodeLevel(Level);
+
+			VictoryConditionViewModel = new VictoryConditionViewModel(Level);
 
 		}
 
