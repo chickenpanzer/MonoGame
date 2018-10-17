@@ -60,29 +60,33 @@
 			<Expander Header="Floors" IsExpanded="False">
 
 				<ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
-					<ItemsControl x:Name="TexturePresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=bitmap}, Path=BitmapDictionary}" >
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<WrapPanel />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<StackPanel>
-									<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
-									<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+					<StackPanel Orientation="Horizontal">
+						<Button Content="Reset floor" Command="{Binding SelectAssetCommand}" Height="30" Width="Auto"/>
+						<ItemsControl x:Name="TexturePresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=bitmap}, Path=BitmapDictionary}" >
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<StackPanel>
+										<TextBlock Text="{Binding Path=Key, FallbackValue=binding_error}"/>
+										<Button Margin="0,0,5,5" Command="{Binding RelativeSource={RelativeSource FindAncestor, 
 																AncestorType={x:Type Window}}, Path=DataContext.SelectAssetCommand}" CommandParameter="{Binding DataContext.Key, RelativeSource={RelativeSource Self}}">
-										<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
-									</Button>
-								</StackPanel>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
+											<Image Source="{Binding Path=Value}" Height="32" Width="32" Stretch="Fill"/>
+										</Button>
+									</StackPanel>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
 				</ScrollViewer>
 
 			</Expander>
 			<Expander Header="Items" IsExpanded="False">
 				<StackPanel x:Name="ItemsToolbar" Orientation="Horizontal"  Background="CadetBlue">
+					<Button Content="Reset item" Command="{Binding SelectItemCommand}" Height="30" Width="Auto"/>
 					<ItemsControl x:Name="ItemsPresenter" ItemsSource="{Binding Source={StaticResource ResourceKey=items}, Path=BitmapDictionary}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
@@ -101,7 +105,7 @@
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>
-					<Button Content="Reset item" Command="{Binding SelectItemCommand}" Height="30" Width="Auto"/>
+
 				</StackPanel>
 			</Expander>
 			<Expander Header="Monsters" IsExpanded="False">

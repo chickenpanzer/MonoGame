@@ -14,7 +14,7 @@ namespace ToolKit
 {
 	public class ToolKitDataContext : ViewModelBase
 	{
-		
+		//ctor
 		public ToolKitDataContext()
 		{
 			_rows = new ObservableCollection<ObservableCollection<LevelTilesTile>>();
@@ -31,8 +31,10 @@ namespace ToolKit
 			VictoryConditionViewModel = new VictoryConditionViewModel();
 		}
 
+		/// <summary>
+		/// Sub-ViewModels
+		/// </summary>
 		public ItemsViewModel ItemsViewModel { get; set; }
-
 		public MonsterViewModel MonsterViewModel { get; set; }
 		public VictoryConditionViewModel VictoryConditionViewModel
 		{
@@ -54,6 +56,7 @@ namespace ToolKit
 			get { return _modeArray; }
 		}
 
+		//Edit modes
 		enum EditModes
 		{
 			FloorMode = 0,
@@ -129,8 +132,6 @@ namespace ToolKit
 				RaisePropertyChanged();
 			}
 		}
-
-
 
 		public ObservableCollection<ObservableCollection<LevelTilesTile>> Rows
 		{
@@ -370,7 +371,7 @@ namespace ToolKit
 			//Floor mode
 			if (EditMode() == EditModes.FloorMode)
 			{
-				if (!string.IsNullOrEmpty(SelectedAsset))
+				//if (!string.IsNullOrEmpty(SelectedAsset))
 					layer.assetName = SelectedAsset;
 
 				tile.isWalkable = IsWalkableOption.ToString();

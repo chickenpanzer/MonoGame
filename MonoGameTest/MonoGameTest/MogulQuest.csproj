@@ -228,6 +228,9 @@
     <Content Include="Enter.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Hollow.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="Level01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
