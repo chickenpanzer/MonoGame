@@ -107,7 +107,6 @@ namespace MogulQuest
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			
 			//Fonts
 			font = this.Content.Load<SpriteFont>("BasicFont");
 
@@ -117,7 +116,6 @@ namespace MogulQuest
 
 			//Level
 			level = new Level(this, this.Penumbra);
-
 
 			string selectedLevelFile = null;
 
@@ -236,12 +234,13 @@ namespace MogulQuest
 			penumbra.Transform = _camera.Transform;
 			penumbra.Draw(gameTime);
 
-			//Draw Text
+			//Begin spriteBatch
 			spriteBatch.Begin();
 
 			//Draw text
 			spriteBatch.DrawString(font, score, Vector2.Zero, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 
+			//Game over message when player HP <= 0
 			if (player.Health <= 0)
 			{
 				spriteBatch.DrawString(font, "GAME OVER", new Vector2((Constants.ScreenWidth / 2) - 32, Constants.ScreenHeight / 2), Color.Red, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
@@ -249,7 +248,7 @@ namespace MogulQuest
 
 			spriteBatch.End();
 
-			//Level transition
+			//Level transition - draw changelevel animation
 			if (_gameState == GameState.ChangingLevel)
 			{
 				spriteBatch.Begin();
@@ -261,6 +260,7 @@ namespace MogulQuest
 
 			}
 
+			//then, draw everithing else !
 			base.Draw(gameTime);
 		}
 	}
